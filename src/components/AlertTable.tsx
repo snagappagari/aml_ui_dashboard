@@ -6,6 +6,7 @@ import { Alert, ApiAlert } from "../commonUtils/Interface"; // Import shared int
 // Define the props interface
 interface AlertsTableProps {
   onRowClick?: (alert: Alert) => void;
+  setAlertData: (data: any) => void;
 }
 
 // Interface for pagination
@@ -16,7 +17,8 @@ interface PaginationState {
   pageSize: number;
 }
 
-const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick }) => {
+
+const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick , setAlertData }) => {
   // State for alerts data
   const [apiAlerts, setApiAlerts] = useState<ApiAlert[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -40,7 +42,7 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick }) => {
         setLoading(true);
         const data = await AlertService.getAllAlerts(pagination.currentPage, pagination.pageSize);
         setApiAlerts(data.content || []);
-        
+        setAlertData(data.content || []); 
         // Update pagination state from the response
         setPagination({
           ...pagination,

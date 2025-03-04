@@ -237,7 +237,7 @@ const AlertDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBackToTabl
                   <polyline points="17 8 12 3 7 8"></polyline>
                   <line x1="12" y1="3" x2="12" y2="15"></line>
                 </svg> */}
-<img src={Upload} alt="Upload" className="mx-auto mb-4 w-15 h-15" />
+              <img src={Upload} alt="Upload" className="mx-auto mb-4 w-15 h-15" />
                 <p className="text-gray-600 mb-1">Click to upload</p>
                 <p className="text-xs text-gray-500">(Max. file size 25MB)</p>
               </>

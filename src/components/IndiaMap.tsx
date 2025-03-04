@@ -1,28 +1,28 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
-const cities = [
-  { name: "New Delhi", lat: 28.6139, lng: 77.209 },
-  { name: "Mumbai", lat: 19.076, lng: 72.8777 },
-  { name: "Bengaluru", lat: 12.9716, lng: 77.5946 },
-  { name: "Chennai", lat: 13.0827, lng: 80.2707 },
-  { name: "Kolkata", lat: 22.5726, lng: 88.3639 },
-];
+interface IndiaMapProps {
+  alertData: any;
+}
 
-const IndiaMap = () => {
+const IndiaMap: React.FC<IndiaMapProps> = ({ alertData }) => {
+  // Ensure alertData is an array before mapping
+  if (!alertData || !Array.isArray(alertData)) {
+    return <p className="text-center">Loading Alert Map...</p>;
+  }
+
   return (
     <div className="w-full">
       <MapContainer
-        center={[20.5937, 78.9629]} // Center of India
-        zoom={3}
+        center={[37.0902, -95.7129]} // Center of United States
+        zoom={4}
         style={{ height: "500px", width: "100%" }}
       >
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        {cities.map((city, index) => (
-          <Marker key={index} position={[city.lat, city.lng]}>
-            <Popup>{city.name}</Popup>
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+
+        {alertData.map((city: any, index: number) => (
+          <Marker key={index} position={[city.latitude, city.longitude]}>
+            <Popup>{city.city}</Popup>
           </Marker>
         ))}
       </MapContainer>

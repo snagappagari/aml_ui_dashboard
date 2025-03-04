@@ -6,7 +6,7 @@ import AlertSummary from './AlertSummary';
 import AlertsTable from './AlertTable';
 import IndiaMap from './IndiaMap';
 import AlertDetails from './AlertDetails';
-import { Alert } from '../commonUtils/Interface'; // Import shared Alert interface
+import { Alert } from '../commonUtils/Interface';
 
 const Dashboard: React.FC = () => {
   // User information
@@ -17,7 +17,7 @@ const Dashboard: React.FC = () => {
 
   // State for dynamic greeting and current time
   const [currentTime, setCurrentTime] = useState(new Date());
-
+  const [alertData, setAlertData] = useState<any>(null);
   // Function to get the greeting message based on time
   const getGreeting = () => {
     const hours = currentTime.getHours();
@@ -91,10 +91,10 @@ const Dashboard: React.FC = () => {
           // Show the table and map when not in detail view
           <div className="flex gap-5 mt-5">
             <div className="flex-1 bg-white rounded-lg shadow p-5">
-              <AlertsTable onRowClick={handleAlertRowClick} />
+              <AlertsTable onRowClick={handleAlertRowClick}  setAlertData={setAlertData} />
             </div>
             <div className="flex-1 bg-white rounded-lg shadow p-5">
-              <IndiaMap />
+              <IndiaMap alertData={alertData} />
             </div>
           </div>
         ) : (
