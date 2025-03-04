@@ -1,5 +1,6 @@
 import React from 'react';
 import Logo from "../assets/Logo.svg";
+import Avt from "../assets/Avt.svg";
 
 interface HeaderProps {
   user: {
@@ -25,7 +26,8 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 bg-gray-200 rounded-full overflow-hidden">
-            <img src="/avatar.png" alt={user.name} className="w-full h-full object-cover" />
+            {/* <img src="/avatar.png" alt={user.name} className="w-full h-full object-cover" /> */}
+            <img src={Avt} alt={user.name} className="w-full h-full object-cover" />
           </div>
           <div className="flex flex-col">
             <span className="text-sm font-medium">{user.name}</span>
