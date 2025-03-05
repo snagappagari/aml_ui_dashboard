@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Header from './Header';
-import Navbar from './Navbar';
 import SubNavbar from './SubNavbar';
 import AlertSummary from './AlertSummary';
 import AlertsTable from './AlertTable';
@@ -9,15 +7,10 @@ import AlertDetails from './AlertDetails';
 import { Alert } from '../commonUtils/Interface';
 
 const Dashboard: React.FC = () => {
-  // User information
-  const user = {
-    name: 'Admin',
-    role: 'Admin'
-  };
-
   // State for dynamic greeting and current time
   const [currentTime, setCurrentTime] = useState(new Date());
   const [alertData, setAlertData] = useState<any>(null);
+
   // Function to get the greeting message based on time
   const getGreeting = () => {
     const hours = currentTime.getHours();
@@ -70,41 +63,37 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50 font-sans">
-      <Header user={user} />
-      
-      <div className="flex-1 p-5">
-        <Navbar />
-        <SubNavbar />
-        
-        <div className="py-5 px-2 flex justify-between items-center">
-          <div className="flex-1">
-            <p className="text-sm text-gray-600">Hello {user.name},</p>
-            <h1 className="text-2xl font-semibold">{getGreeting()}!</h1>
-            <p className="text-xs text-gray-500">{dateString}</p>
-          </div>
-          {/* The AlertSummary component now fetches data from the API internally */}
-          <AlertSummary />
+    <div className="space-y-5">
+            <SubNavbar />
+      <div className="flex justify-between items-center">
+        <div>
+          <p className="text-sm text-gray-600">Hello Admin,</p>
+          <h1 className="text-2xl">{getGreeting()}!</h1>
+          <p className="text-xs text-gray-500">{dateString}</p>
         </div>
-        
-        {!showDetailView ? (
-          // Show the table and map when not in detail view
-          <div className="flex gap-5 mt-5">
-            <div className="flex-1 bg-white rounded-lg shadow p-5">
-              <AlertsTable onRowClick={handleAlertRowClick}  setAlertData={setAlertData} />
-            </div>
-            <div className="flex-1 bg-white rounded-lg shadow p-5">
-              <IndiaMap alertData={alertData} />
-            </div>
-          </div>
-        ) : (
-          // Show the detail view when an alert is selected
-          <AlertDetails 
-            selectedAlert={selectedAlert} 
-            onBackToTable={handleBackToTable} 
-          />
-        )}
+        <AlertSummary />
       </div>
+      
+      {!showDetailView ? (
+        // Show the table and map when not in detail view
+        <div className="flex gap-5">
+          <div className="flex-1 bg-white rounded-lg shadow p-5">
+            <AlertsTable 
+              onRowClick={handleAlertRowClick}  
+              setAlertData={setAlertData} 
+            />
+          </div>
+          <div className="flex-1 bg-white rounded-lg shadow p-5">
+            <IndiaMap alertData={alertData} />
+          </div>
+        </div>
+      ) : (
+        // Show the detail view when an alert is selected
+        <AlertDetails 
+          selectedAlert={selectedAlert} 
+          onBackToTable={handleBackToTable} 
+        />
+      )}
     </div>
   );
 };

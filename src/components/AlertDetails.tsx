@@ -98,14 +98,14 @@ const AlertDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBackToTabl
         </div>
         
         <div className="mb-6">
-          <h3 className="text-lg font-semibold mb-4">Overview</h3>
+          <h3 className="text-lg mb-4">Overview</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
-              <h4 className="text-sm font-semibold mb-1">Alert ID</h4>
+              <h4 className="text-sm mb-1">Alert ID</h4>
               <p className="text-sm">{selectedAlert.id}</p>
             </div>
             <div>
-              <h4 className="text-sm font-semibold mb-1">Alert Date</h4>
+              <h4 className="text-sm mb-1">Alert Date</h4>
               <p className="text-sm">{selectedAlert.date}</p>
             </div>
             {/* <div>
@@ -113,15 +113,15 @@ const AlertDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBackToTabl
               <p className="text-sm">{selectedAlert.amount}</p>
             </div> */}
             <div>
-              <h4 className="text-sm font-semibold mb-1">Alert Status</h4>
+              <h4 className="text-sm mb-1">Alert Status</h4>
               <p className="text-sm">{selectedAlert.alertStatus}</p>
             </div>
             <div>
-              <h4 className="text-sm font-semibold mb-1">Alert Type</h4>
+              <h4 className="text-sm mb-1">Alert Type</h4>
               <p className="text-sm">{selectedAlert.description}</p>
             </div>
             <div>
-              <h4 className="text-sm font-semibold mb-1">Rule</h4>
+              <h4 className="text-sm mb-1">Rule</h4>
               <p className="text-sm">{selectedAlert.rule}</p>
             </div>
             {/* <div>
@@ -129,7 +129,7 @@ const AlertDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBackToTabl
               <p className="text-sm">233085</p>
             </div> */}
             <div>
-              <h4 className="text-sm font-semibold mb-1">Transaction Type</h4>
+              <h4 className="text-sm mb-1">Transaction Type</h4>
               <p className="text-sm">{selectedAlert.transactionType}</p>
             </div>
             {/* <div>
@@ -137,35 +137,35 @@ const AlertDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBackToTabl
               <p className="text-sm">6058</p>
             </div> */}
             <div>
-              <h4 className="text-sm font-semibold mb-1">Network</h4>
+              <h4 className="text-sm mb-1">Network</h4>
               <p className="text-sm">{selectedAlert.network}</p>
             </div>
             <div>
-              <h4 className="text-sm font-semibold mb-1">Country</h4>
+              <h4 className="text-sm mb-1">Country</h4>
               <p className="text-sm">{selectedAlert.country}</p>
             </div>
             <div>
-              <h4 className="text-sm font-semibold mb-1">Alert Owner</h4>
+              <h4 className="text-sm mb-1">Alert Owner</h4>
               <p className="text-sm">{selectedAlert.owner}</p>
             </div>
             <div>
-              <h4 className="text-sm font-semibold mb-1">Last Updated</h4>
+              <h4 className="text-sm mb-1">Last Updated</h4>
               <p className="text-sm">{selectedAlert.date}</p>
             </div>
             <div>
-              <h4 className="text-sm font-semibold mb-1">Uploaded File</h4>
+              <h4 className="text-sm mb-1">Uploaded File</h4>
               {selectedAlert.downloadFile ? (
                 <p className="text-sm text-blue-600 cursor-pointer">{selectedAlert.downloadFile}</p>
               ) : (
-                <p className="text-sm font-semibold text-gray-400">No file uploaded</p>
+                <p className="text-sm text-gray-400">No file uploaded</p>
               )}
             </div>
             <div>
-              <h4 className="text-sm font-semibold mb-1">Rule Version</h4>
+              <h4 className="text-sm mb-1">Rule Version</h4>
               <p className="text-sm">{selectedAlert.ruleVersion}</p>
             </div>
             <div>
-              <h4 className="text-sm font-semibold mb-1">Case ID</h4>
+              <h4 className="text-sm mb-1">Case ID</h4>
               <p className="text-sm">{selectedAlert.caseID}</p>
             </div>
           </div>

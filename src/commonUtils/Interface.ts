@@ -26,6 +26,7 @@ export interface Alert {
     region: string;
     city: string;
     mailSent: boolean;
+    priority:string;
     latitude: number;
     longitude: number;
     createdAt: string;
