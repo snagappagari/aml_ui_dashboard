@@ -233,9 +233,10 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick , setAlertData }) 
                           {alert.status}
                         </span>
                       </td> */}
-                      <td className={`py-3 px-4 text-sm ${alert.priority?.toLowerCase() === "medium" ? "text-orange-500" :
+                      <td className={`py-3 px-4 text-sm ${alert.priority?.toLowerCase() === "medium" ? "text-orange-400" :
                           alert.priority?.toLowerCase() === "low" ? "text-green-500" :
-                            alert.priority?.toLowerCase() === "high" ? "text-red-500" :
+                            alert.priority?.toLowerCase() === "high" ? "text-red-600" :
+                            alert.priority?.toLowerCase() === "critical" ? "text-purple-500" :
                               "text-gray-700"
                         }`}>
                         {alert.priority

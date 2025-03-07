@@ -11,7 +11,7 @@ const Navbar: React.FC = () => {
     { id: "transaction", label: "Transaction Monitoring", path: "/transaction" },
     { id: "case", label: "Case Management", path: "/case" },
     { id: "reports", label: "Reports", path: "/reports" },
-    { id: "manual", label: "Manual Processing", path: "/manualprocessing" },
+    { id: "manual", label: "Data Processing", path: "/data-processing" },
   ];
 
   const handleNavigation = (id: string, path: string) => {

@@ -15,7 +15,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/transaction" element={<TransactionMonitoring />} />
       <Route path="/case" element={<CaseManagement />} />
       <Route path="/reports" element={<Reports />} /> */}
-      <Route path="/manualprocessing" element={<ManualProcessing />} />
+      <Route path="/data-processing" element={<ManualProcessing />} />
     </Routes>
   );
 };

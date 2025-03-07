@@ -7,11 +7,13 @@ import "leaflet/dist/leaflet.css";
 const getPriorityColor = (priority: string) => {
   switch(priority.toUpperCase()) {
     case 'HIGH':
-      return 'bg-red-500';
+      return 'bg-red-600';
     case 'MEDIUM':
-      return 'bg-orange-500';
+      return 'bg-orange-400';
     case 'LOW':
       return 'bg-green-500';
+    case 'CRITICAL':
+      return 'bg-purple-500';
     default:
       return 'bg-gray-500';
   }

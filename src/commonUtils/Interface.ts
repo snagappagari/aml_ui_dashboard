@@ -35,8 +35,8 @@ export interface Alert {
   
   export interface AlertCountData {
     TOTAL: number;
-    HIGH: number;
-    MEDIUM: number;
-    LOW: number;
-    CRITICAL: number;
+    high: number;
+    medium: number;
+    low: number;
+    critical: number;
   }

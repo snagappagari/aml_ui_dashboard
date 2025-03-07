@@ -5,10 +5,10 @@ import { AlertCountData } from '../commonUtils/Interface';
 const AlertSummary: React.FC = () => {
   const [alertsData, setAlertsData] = useState<AlertCountData>({
     TOTAL: 0,
-    HIGH: 0,
-    MEDIUM: 0,
-    LOW: 0,
-    CRITICAL: 0
+    high: 0,
+    medium: 0,
+    low: 0,
+    critical: 0
   });
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -26,10 +26,10 @@ const AlertSummary: React.FC = () => {
         // Map the API response to your state object
         setAlertsData({
           TOTAL: response.TOTAL || 0,
-          HIGH: response.HIGH || 0,
-          MEDIUM: response.MEDIUM || 0,
-          LOW: response.LOW || 0,
-          CRITICAL: response.CRITICAL || 0
+          high: response.high || 0,
+          medium: response.medium || 0,
+          low: response.low || 0,
+          critical: response.critical || 0
         });
         
         setError(null);
@@ -46,10 +46,10 @@ const AlertSummary: React.FC = () => {
 
   const alertCategories = [
     { id: 'total', label: 'Total', count: alertsData.TOTAL, colorClass: 'text-blue-500' },
-    { id: 'high', label: 'High', count: alertsData.HIGH, colorClass: 'text-red-500' },
-    { id: 'medium', label: 'Medium', count: alertsData.MEDIUM, colorClass: 'text-orange-500' },
-    { id: 'low', label: 'Low', count: alertsData.LOW, colorClass: 'text-green-500' },
-    { id: 'critical', label: 'Critical', count: alertsData.CRITICAL, colorClass: 'text-purple-500' }
+    { id: 'high', label: 'High', count: alertsData.high, colorClass: 'text-red-500' },
+    { id: 'medium', label: 'Medium', count: alertsData.medium, colorClass: 'text-orange-500' },
+    { id: 'low', label: 'Low', count: alertsData.low, colorClass: 'text-green-500' },
+    { id: 'critical', label: 'Critical', count: alertsData.critical, colorClass: 'text-purple-500' }
   ];
 
   if (loading) {
