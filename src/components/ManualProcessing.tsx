@@ -1,6 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Upload from "../assets/Upload.svg";
-
+import CpuIcon from "../assets/cpu-charge.svg";
+import Partitions from "../assets/grid-8.svg";
+import Threads from "../assets/hierarchy.svg";
+import Transactions from "../assets/document-text.svg";
+import Weight from "../assets/weight.svg";
+import Timer from "../assets/timer.svg";
+import Simcard from "../assets/simcard.svg";
+import Danger from "../assets/danger.svg";
+import Lamp from "../assets/lamp.svg";
+import Layer from "../assets/layer.svg";
 // Define comprehensive interface for progress data
 interface ProgressData {
   phase: string;
@@ -229,16 +238,16 @@ const ManualProcessing: React.FC = () => {
       {/* Stats Grid */}
       <div className="grid grid-cols-5 gap-4">
         {[
-          { icon: 'src/assets/cpu-charge.svg', label: 'CPU Usage', value: `${progressData.cpuUsage}%` },
-          { icon: 'src/assets/grid-8.svg', label: 'Partitions', value: progressData.partitions },
-          { icon: 'src/assets/hierarchy.svg', label: 'Threads', value: progressData.threads },
-          { icon: 'src/assets/document-text.svg', label: 'Transactions', value: progressData.transactions.toLocaleString() },
-          { icon: 'src/assets/weight.svg', label: 'Throughput', value: `${progressData.throughput.toLocaleString()} rec/sec` },
-          { icon: 'src/assets/timer.svg', label: 'Avg Partition Time', value: `${progressData.avgPartitionTime} ms` },
-          { icon: 'src/assets/simcard.svg', label: 'Memory Usage', value: `${progressData.memoryUsage} MB` },
-          { icon: 'src/assets/danger.svg', label: 'Error Count', value: progressData.errorCount },
-          { icon: 'src/assets/lamp.svg', label: 'Alerts Generated', value: progressData.alertsGenerated },
-          { icon: 'src/assets/layer.svg', label: 'Cases Generated', value: progressData.casesGenerated },
+          { icon: CpuIcon, label: 'CPU Usage', value: `${progressData.cpuUsage}%` },
+          { icon: Partitions, label: 'Partitions', value: progressData.partitions },
+          { icon: Threads, label: 'Threads', value: progressData.threads },
+          { icon: Transactions, label: 'Transactions', value: progressData.transactions.toLocaleString() },
+          { icon: Weight, label: 'Throughput', value: `${progressData.throughput.toLocaleString()} rec/sec` },
+          { icon: Timer, label: 'Avg Partition Time', value: `${progressData.avgPartitionTime} ms` },
+          { icon: Simcard, label: 'Memory Usage', value: `${progressData.memoryUsage} MB` },
+          { icon: Danger, label: 'Error Count', value: progressData.errorCount },
+          { icon: Lamp, label: 'Alerts Generated', value: progressData.alertsGenerated },
+          { icon: Layer, label: 'Cases Generated', value: progressData.casesGenerated },
         ].map(({ icon, label, value }, index) => (
           <div key={index} className="border rounded-lg p-3 flex items-center space-x-3">
             <img src={icon} className="w-8 h-8" alt={label} />
