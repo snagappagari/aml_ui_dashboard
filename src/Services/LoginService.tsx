@@ -7,6 +7,9 @@ class LoginService {
     const response = await axios.post(BASE_URL + LOGIN_URL.login, obj);
     return response.data;
   }
+  getlatlogin() {
+    return axios.get(BASE_URL +LOGIN_URL.getlatlogin);
+  }
 }
 
 export default new LoginService();

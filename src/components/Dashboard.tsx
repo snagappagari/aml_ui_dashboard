@@ -5,6 +5,7 @@ import AlertsTable from './AlertTable';
 import IndiaMap from './IndiaMap';
 import AlertDetails from './AlertDetails';
 import { Alert } from '../commonUtils/Interface';
+import LoginService from '../Services/LoginService';
 
 const Dashboard: React.FC = () => {
   // State for dynamic greeting and current time
@@ -18,6 +19,19 @@ const Dashboard: React.FC = () => {
     if (hours < 18) return 'Good Afternoon';
     return 'Good Evening';
   };
+
+  useEffect(()=>{
+    getLatestLogin();
+
+  },[])
+  const getLatestLogin =()=>{
+    LoginService.getlatlogin().then((res)=>{
+      if(res){
+        console.log(res)
+      }
+    })
+  }
+
 
   // Effect to update time every second
   useEffect(() => {

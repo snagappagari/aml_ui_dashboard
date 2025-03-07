@@ -8,7 +8,7 @@ const Navbar: React.FC = () => {
   const navItems = [
     { id: "homepage", label: "Homepage", path: "/dashboard" },
     { id: "customer", label: "Customer Management", path: "/customer" },
-    { id: "transaction", label: "Transaction Monitoring", path: "/transaction" },
+    { id: "transaction", label: "Transaction Monitoring", path: "/transaction-monitoring" },
     { id: "case", label: "Case Management", path: "/case" },
     { id: "reports", label: "Reports", path: "/reports" },
     { id: "manual", label: "Data Processing", path: "/data-processing" },

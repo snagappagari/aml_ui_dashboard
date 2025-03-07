@@ -1,19 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // If using React Router
 import Logo from "../assets/Logo.svg";
 import Avt from "../assets/Avt.svg";
 import Logout from "../assets/Logout.svg";
+import LoginService from "../Services/LoginService";
+import { formatDate } from "../FormateDate";
 
 interface HeaderProps {
-  user: {
-    name: string;
-    role: string;
-  };
+
 }
 
-const Header: React.FC<HeaderProps> = ({ user }) => {
+const Header: React.FC<HeaderProps> = ({  }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [user, setUser] = useState<{ firstName: string; lastLogin: string }>({
+    firstName: "",
+    lastLogin: "",
+  });
   const navigate = useNavigate(); // React Router navigation
+  useEffect(()=>{
+    getLatestLogin();
+
+  },[])
+  const getLatestLogin =()=>{
+    LoginService.getlatlogin().then((res)=>{
+      if(res){
+        setUser(res.data)
+      }
+    })
+  }
 
   const handleLogout = () => {
     // Clear auth token from localStorage (or handle logout logic)
@@ -37,11 +51,11 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
           {/* Avatar Button */}
           <button onClick={() => setDropdownOpen(!dropdownOpen)} className="flex items-center gap-2 focus:outline-none">
             <div className="w-9 h-9 bg-gray-200 rounded-full overflow-hidden">
-              <img src={Avt} alt={user.name} className="w-full h-full object-cover" />
+              <img src={Avt} alt={user.firstName} className="w-full h-full object-cover" />
             </div>
             <div className="hidden md:flex flex-col">
-              <span className="text-sm font-medium">{user.name}</span>
-              <span className="text-xs text-gray-500">{user.role}</span>
+              <span className="text-sm font-medium">{user.firstName}</span>
+              <span className="text-xs text-gray-500">{formatDate(user.lastLogin)}</span>
             </div>
           </button>
 
