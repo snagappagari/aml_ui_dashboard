@@ -15,16 +15,18 @@ class AlertService {
     }).then(response => response.data);
   }
   // getAlertCount() {
-  //   return axios.get(BASE_URL + ALERT_URL.getAlertCount);
+  //   return axios.get(BASE_URL + ALERT_URL.getAlertCount, {
+  //     headers: {
+  //       Authorization: `Bearer ${sessionStorage.getItem('token')}`
+  //     }
+  //   }).then(response => response.data);
+    
   // }
-  getAlertCount() {
-    return axios.get(BASE_URL + ALERT_URL.getAlertCount, {
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem('token')}`
-      }
-    }).then(response => response.data);
-  }
   
+  getAlertCount() {
+    return axios.get(BASE_URL + ALERT_URL.getAlertCount)
+      .then(response => response.data);
+  }
 
   getAlertById(alertId: string) {
     return axios.get(BASE_URL + ALERT_URL.getAlertById + alertId);

@@ -13,10 +13,7 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ 
   children, 
-  user = { 
-    name: 'Admin', 
-    role: 'Admin' 
-  } 
+
 }) => {
   const location = useLocation();
 
@@ -43,7 +40,7 @@ const Layout: React.FC<LayoutProps> = ({
 
   return (
     <div className="flex flex-col h-screen">
-      <Header user={user} />
+      <Header />
       <main className="flex-1 overflow-y-auto p-4">
       <Navbar />
         {children}
