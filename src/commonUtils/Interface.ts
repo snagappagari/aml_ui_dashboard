@@ -4,7 +4,7 @@ export interface Alert {
     id: string;
     description: string;
     date: string;
-    rule: string;
+    rule: number;
     alertStatus?: string;
     amount?: string;
     transactionType?: string;
@@ -14,6 +14,7 @@ export interface Alert {
     owner?: string;
     caseID?: string;
     downloadFile?: string;
+    transactionId?:string;
   }
   
   export interface ApiAlert {
@@ -40,3 +41,14 @@ export interface Alert {
     low: number;
     critical: number;
   }
+
+  export interface AlertLocation {
+    city: string;
+    country: string;
+    region: string;
+    priority: string;
+    count: number;
+    latitude: number;
+    longitude: number;
+  }
+  

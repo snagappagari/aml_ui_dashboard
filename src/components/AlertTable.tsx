@@ -89,9 +89,10 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick , setAlertData }) 
       id: apiAlert.alertId,
       description: apiAlert.alertType,
       date: formatDate(apiAlert.createdAt),
-      rule: `Rule ID: ${apiAlert.ruleId}`,
+      rule: apiAlert.ruleId,
       alertStatus: apiAlert.status,
-      country: apiAlert.country
+      country: apiAlert.country,
+      transactionId: apiAlert.transactionId
       // Add other mappings as needed
     };
   };

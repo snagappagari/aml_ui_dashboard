@@ -17,6 +17,8 @@ interface Alert {
   owner?: string;
   caseID?: string;
   downloadFile?: string;
+  transactionId?: string;
+
 }
 
 interface AlertDetailsProps {
@@ -121,13 +123,13 @@ const AlertDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBackToTabl
               <p className="text-sm">{selectedAlert.description}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1">Rule</h4>
+              <h4 className="text-sm mb-1">Rule ID</h4>
               <p className="text-sm">{selectedAlert.rule}</p>
             </div>
-            {/* <div>
-              <h4 className="text-sm mb-1">MCC Code</h4>
-              <p className="text-sm">233085</p>
-            </div> */}
+            <div>
+              <h4 className="text-sm mb-1">Transaction ID</h4>
+              <p className="text-sm">{selectedAlert.transactionId}</p>
+            </div>
             <div>
               <h4 className="text-sm mb-1">Transaction Type</h4>
               <p className="text-sm">{selectedAlert.transactionType}</p>

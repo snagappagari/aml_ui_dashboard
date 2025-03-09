@@ -1,34 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import AlertService from "../Services/AlertService"
+import { AlertLocation } from "../commonUtils/Interface";
 
 // Priority color mapping
 const getPriorityColor = (priority: string) => {
-  switch(priority.toUpperCase()) {
-    case 'HIGH':
+  switch(priority.toLowerCase()) {
+    case 'high':
       return 'bg-red-600';
-    case 'MEDIUM':
+    case 'medium':
       return 'bg-orange-400';
-    case 'LOW':
+    case 'low':
       return 'bg-green-500';
-    case 'CRITICAL':
+    case 'critical':
       return 'bg-purple-500';
     default:
       return 'bg-gray-500';
   }
 };
 
-interface IndiaMapProps {
-  alertData: Array<{
-    city: string;
-    latitude: number;
-    longitude: number;
-    priority: string;
-  }>;
-}
 
-const IndiaMap: React.FC<IndiaMapProps> = ({ alertData }) => {
+const IndiaMap: React.FC = () => {
+  const [alertData, setAlertData] = useState<AlertLocation[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchAlertData = async () => {
+      try {
+        setIsLoading(true);
+        const data = await AlertService.getAlertByLocation();
+        setAlertData(data);
+        setIsLoading(false);
+      } catch (err) {
+        console.error("Error fetching alert data:", err);
+        setError("Failed to load alert data. Please try again later.");
+        setIsLoading(false);
+      }
+    };
+
+    fetchAlertData();
+  }, []);
+
   // Create a custom icon generator function
   const createPriorityIcon = (priority: string) => {
     return L.divIcon({
@@ -44,7 +59,7 @@ const IndiaMap: React.FC<IndiaMapProps> = ({ alertData }) => {
     });
   };
 
-  if (!alertData || !Array.isArray(alertData)) {
+  if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center h-48">
         <div className="relative">
@@ -60,25 +75,44 @@ const IndiaMap: React.FC<IndiaMapProps> = ({ alertData }) => {
     );
   }
 
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-48">
+        <div className="text-red-500 text-center">
+          <p className="text-xl font-semibold">Error</p>
+          <p>{error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Calculate map center based on data or default to a central position
+  const mapCenter = alertData.length > 0 
+    ? [alertData[0].latitude, alertData[0].longitude] 
+    : [20, 78]; // Default center for India
+
   return (
     <div className="w-full">
       <MapContainer
-        center={[37.0902, -95.7129]}
-        zoom={4}
+        center={[mapCenter[0], mapCenter[1]] as [number, number]}
+        zoom={2}
         style={{ height: "500px", width: "100%" }}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-        {alertData.map((city, index) => (
+        {alertData.map((location, index) => (
           <Marker 
             key={index} 
-            position={[city.latitude, city.longitude]} 
-            icon={createPriorityIcon(city.priority)}
+            position={[location.latitude, location.longitude]} 
+            icon={createPriorityIcon(location.priority)}
           >
             <Popup>
-              <div>
-                <strong>{city.city}</strong>
-                <p>Priority: {city.priority}</p>
+              <div className="p-2">
+                <h3 className="font-bold text-lg">{location.city}</h3>
+                <p><span className="font-semibold">Country:</span> {location.country}</p>
+                <p><span className="font-semibold">Region:</span> {location.region}</p>
+                <p><span className="font-semibold">Priority:</span> {location.priority}</p>
+                <p><span className="font-semibold">Alert Count:</span> {location.count}</p>
               </div>
             </Popup>
           </Marker>

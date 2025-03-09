@@ -31,6 +31,10 @@ class AlertService {
   getAlertById(alertId: string) {
     return axios.get(BASE_URL + ALERT_URL.getAlertById + alertId);
   }
+getAlertByLocation () {
+  return axios.get(BASE_URL + ALERT_URL.getAlertLocation)
+  .then(response => response.data);
+}
 }
 
 export default new AlertService();

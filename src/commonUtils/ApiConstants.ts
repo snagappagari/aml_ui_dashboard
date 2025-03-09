@@ -6,7 +6,8 @@ export const LOGIN_URL = {
 export const ALERT_URL = {
 getAllAlerts:"/api/v1/alerts?",
 getAlertCount:"/api/v1/alerts/count",
-getAlertById:"/api/v1/alerts/"
+getAlertById:"/api/v1/alerts/",
+getAlertLocation:"/api/v1/alerts/count-by-location"
 };
 
 export const TRANSACTION_URL={
