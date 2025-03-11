@@ -8,7 +8,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        lexend: ["lexendDeca", "sans-serif"], // Add Lexend Deca globally
+        lexend: ["Lexend Deca", "sans-serif"], // Add Lexend Deca globally
       },
       colors: {
         primary: "var(--primary-color)",

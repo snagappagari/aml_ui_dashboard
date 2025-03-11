@@ -18,12 +18,12 @@ interface PaginationState {
 }
 
 
-const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick , setAlertData }) => {
+const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick, setAlertData }) => {
   // State for alerts data
   const [apiAlerts, setApiAlerts] = useState<ApiAlert[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   // State for pagination
   const [pagination, setPagination] = useState<PaginationState>({
     currentPage: 0,
@@ -31,7 +31,7 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick , setAlertData }) 
     totalElements: 0,
     pageSize: 7
   });
-  
+
   // State for search functionality
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -42,14 +42,14 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick , setAlertData }) 
         setLoading(true);
         const data = await AlertService.getAllAlerts(pagination.currentPage, pagination.pageSize);
         setApiAlerts(data.content || []);
-        setAlertData(data.content || []); 
+        setAlertData(data.content || []);
         // Update pagination state from the response
         setPagination({
           ...pagination,
           totalPages: data.page.totalPages,
           totalElements: data.page.totalElements
         });
-        
+
         setError(null);
       } catch (err) {
         console.error("Failed to fetch alerts:", err);
@@ -63,7 +63,7 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick , setAlertData }) 
   }, [pagination.currentPage, pagination.pageSize]);
 
   // Filter alerts based on search term
-  const filteredAlerts = apiAlerts.filter(alert => 
+  const filteredAlerts = apiAlerts.filter(alert =>
     alert.alertId?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     alert.alertType?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     // alert.status?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -76,10 +76,10 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick , setAlertData }) 
   const formatDate = (dateString: string) => {
     if (!dateString) return '';
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-GB', { 
-      day: '2-digit', 
-      month: 'short', 
-      year: 'numeric' 
+    return date.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
     });
   };
 
@@ -128,10 +128,10 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick , setAlertData }) 
       <div className="relative">
         {/* Outer spinning circle */}
         <div className="w-16 h-16 rounded-full border-4 border-blue-200 border-t-blue-500 animate-spin"></div>
-        
+
         {/* Inner pulsing circle */}
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-blue-500 rounded-full animate-pulse opacity-70"></div>
-        
+
         {/* Dots circling around */}
         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-blue-600 rounded-full animate-bounce"></div>
         <div className="absolute top-1/2 right-0 transform translate-y-1/2 w-3 h-3 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
@@ -146,38 +146,37 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick , setAlertData }) 
   const renderPaginationNumbers = () => {
     const pageNumbers = [];
     const maxVisiblePages = 5; // Maximum number of visible page links
-    
+
     let startPage = Math.max(0, pagination.currentPage - Math.floor(maxVisiblePages / 2));
     let endPage = Math.min(pagination.totalPages - 1, startPage + maxVisiblePages - 1);
-    
+
     // Adjust start page if end page is maxed out
     if (endPage === pagination.totalPages - 1) {
       startPage = Math.max(0, endPage - maxVisiblePages + 1);
     }
-    
+
     // Add page numbers
     for (let i = startPage; i <= endPage; i++) {
       pageNumbers.push(
         <button
           key={i}
           onClick={() => goToPage(i)}
-          className={`px-3 py-1 mx-1 rounded ${
-            pagination.currentPage === i
-              ? 'bg-blue-500 text-white'
-              : 'bg-white text-blackhover:bg-blue-500'
-          }`}
+          className={`px-3 py-1 mx-1 rounded ${pagination.currentPage === i
+            ? 'bg-blue-500 text-white'
+            : 'bg-white text-blackhover:bg-blue-500'
+            }`}
         >
           {i + 1}
         </button>
       );
     }
-    
+
     return pageNumbers;
   };
 
   return (
     <div className="w-full">
-      <div className="flex justify-between items-center mb-4">
+      {/* <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl">Recent Alerts</h2>
         <div className="relative">
           <input
@@ -194,8 +193,35 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick , setAlertData }) 
             </svg>
           </span>
         </div>
+      </div> */}
+
+      <div className="flex items-center gap-6 mb-4">
+        <p className="text-black text-xl font-medium">Recent Alerts</p>
+
+        <div className="relative">
+          <input
+            type="text"
+            className="w-[320px] h-[36px] rounded-[12px] px-[14px] pr-[40px] py-[8px] bg-gray-100 text-black text-sm font-lexendDecaLight"
+            placeholder="Search"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+
+          />
+
+          <svg
+            className="absolute top-1/2 right-[12px] transform -translate-y-1/2 h-5 w-5 text-slate-500"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        </div>
       </div>
-      
       {loading ? (
         <AnimatedLoader />
       ) : error ? (
@@ -204,7 +230,7 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick , setAlertData }) 
         </div>
       ) : (
         <>
-          <div className="overflow-x-auto shadow-md rounded-lg">
+          <div className="overflow-x-auto  rounded-lg">
             <table className="min-w-full bg-white">
               <thead className="bg-gray-100">
                 <tr>
@@ -217,14 +243,14 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick , setAlertData }) 
               </thead>
               <tbody className="divide-y divide-gray-200">
                 {filteredAlerts.length > 0 ? (
-                  filteredAlerts.map((alert, index) => (
-                    <tr 
-                      key={alert.alertId} 
-                      className={`${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'} cursor-pointer hover:bg-gray-100`}
+                  filteredAlerts.map((alert) => (
+                    <tr
+                      key={alert.alertId}
+                      className={`bg-white cursor-pointer hover:bg-gray-100`}
                       onClick={() => handleRowClick(alert)}
                     >
-                      <td className="py-3 px-4 text-sm text-gray-700">{alert.alertId}</td>
-                      <td className="py-3 px-4 text-sm text-gray-700">{alert.alertType}</td>
+                      <td className="py-3 px-4 text-sm font-lexendDecaLight text-blue-600 cursor-pointer">{alert.alertId}</td>
+                      <td className="py-3 px-4 text-sm font-lexendDecaLight text-gray-700">{alert.alertType}</td>
                       {/* <td className="py-3 px-4 text-sm text-gray-700">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                           alert.status === 'CLOSED' ? 'bg-green-100 text-green-800' :
@@ -234,9 +260,9 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick , setAlertData }) 
                           {alert.status}
                         </span>
                       </td> */}
-                      <td className={`py-3 px-4 text-sm ${alert.priority?.toLowerCase() === "medium" ? "text-orange-400" :
-                          alert.priority?.toLowerCase() === "low" ? "text-green-500" :
-                            alert.priority?.toLowerCase() === "high" ? "text-red-600" :
+                      <td className={`py-3 px-4 text-sm font-lexendDecaLight ${alert.priority?.toLowerCase() === "medium" ? "text-orange-400" :
+                        alert.priority?.toLowerCase() === "low" ? "text-green-500" :
+                          alert.priority?.toLowerCase() === "high" ? "text-red-600" :
                             alert.priority?.toLowerCase() === "critical" ? "text-purple-500" :
                               "text-gray-700"
                         }`}>
@@ -245,8 +271,8 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick , setAlertData }) 
                           : ""}
                       </td>
 
-                      <td className="py-3 px-4 text-sm text-gray-700">{`${alert.city || ''}, ${alert.country || ''}`}</td>
-                      <td className="py-3 px-4 text-sm text-gray-700">{formatDate(alert.createdAt)}</td>
+                      <td className="py-3 px-4 text-sm font-lexendDecaLight text-gray-700">{`${alert.city || ''}, ${alert.country || ''}`}</td>
+                      <td className="py-3 px-4 text-sm font-lexendDecaLight text-gray-700">{formatDate(alert.createdAt)}</td>
                       {/* <td className="py-2 px-2 text-center">
                         <button 
                           className="w-6 h-6"
@@ -270,7 +296,7 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick , setAlertData }) 
               </tbody>
             </table>
           </div>
-          
+
           {/* Pagination controls */}
           {pagination.totalPages > 1 && (
             <div className="flex justify-between items-center mt-4">
@@ -281,11 +307,10 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick , setAlertData }) 
                 <button
                   onClick={() => handlePageChange(0)}
                   disabled={pagination.currentPage === 0}
-                  className={`px-2 py-1 mx-1 rounded ${
-                    pagination.currentPage === 0
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
+                  className={`px-2 py-1 mx-1 rounded ${pagination.currentPage === 0
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    }`}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="11 17 6 12 11 7"></polyline>
@@ -295,27 +320,25 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick , setAlertData }) 
                 <button
                   onClick={() => handlePageChange(pagination.currentPage - 1)}
                   disabled={pagination.currentPage === 0}
-                  className={`px-2 py-1 mx-1 rounded ${
-                    pagination.currentPage === 0
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
+                  className={`px-2 py-1 mx-1 rounded ${pagination.currentPage === 0
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    }`}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="15 18 9 12 15 6"></polyline>
                   </svg>
                 </button>
-                
+
                 {renderPaginationNumbers()}
-                
+
                 <button
                   onClick={() => handlePageChange(pagination.currentPage + 1)}
                   disabled={pagination.currentPage === pagination.totalPages - 1}
-                  className={`px-2 py-1 mx-1 rounded ${
-                    pagination.currentPage === pagination.totalPages - 1
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
+                  className={`px-2 py-1 mx-1 rounded ${pagination.currentPage === pagination.totalPages - 1
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    }`}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="9 18 15 12 9 6"></polyline>
@@ -324,11 +347,10 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick , setAlertData }) 
                 <button
                   onClick={() => handlePageChange(pagination.totalPages - 1)}
                   disabled={pagination.currentPage === pagination.totalPages - 1}
-                  className={`px-2 py-1 mx-1 rounded ${
-                    pagination.currentPage === pagination.totalPages - 1
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
+                  className={`px-2 py-1 mx-1 rounded ${pagination.currentPage === pagination.totalPages - 1
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    }`}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="13 17 18 12 13 7"></polyline>

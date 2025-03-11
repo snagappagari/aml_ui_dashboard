@@ -1,0 +1,22 @@
+.mobile-card{
+    display: none;
+}
+.web-pagination{
+    display: flex;
+}
+@media (min-width: 200px) and (max-width: 600px) {
+    .table-data{
+        display: none;
+    }
+    .mobile-card{
+        display: block;
+    }
+    .web-pagination{
+        display: none;
+    }
+    canvas{
+        top:0;
+        right: 0;
+        position: absolute;
+    }
+}

@@ -19,10 +19,10 @@ const AlertSummary: React.FC = () => {
         setLoading(true);
         // Make the API call
         const response = await AlertService.getAlertCount();
-        
+
         // Log the API response for debugging
         console.log('API response:', response);
-        
+
         // Map the API response to your state object
         setAlertsData({
           TOTAL: response.TOTAL || 0,
@@ -31,7 +31,7 @@ const AlertSummary: React.FC = () => {
           low: response.low || 0,
           critical: response.critical || 0
         });
-        
+
         setError(null);
       } catch (err) {
         console.error('Error fetching alert count:', err);
@@ -61,10 +61,23 @@ const AlertSummary: React.FC = () => {
   }
 
   return (
+    // <div className="flex items-center gap-x-2">
+    //   {alertCategories.map((category) => (
+    //     <div key={category.id} className="bg-white rounded-md shadow p-3 flex flex-col items-center w-20">
+    //       <div className="text-xs text-gray-600">{category.label}</div>
+    //       <div className={`text-lg font-semibold ${category.colorClass}`}>
+    //         {category.count}
+    //       </div>
+    //     </div>
+    //   ))}
+    // </div>
     <div className="flex items-center gap-x-2">
       {alertCategories.map((category) => (
-        <div key={category.id} className="bg-white rounded-md shadow p-3 flex flex-col items-center w-20">
-          <div className="text-xs text-gray-600">{category.label}</div>
+        <div
+          key={category.id}
+          className="bg-white rounded-md border p-3 flex flex-col items-right w-[180px] h-[70px]"
+        >
+          <div className="text-sm font-medium text-gray-600">{category.label}</div>
           <div className={`text-lg font-semibold ${category.colorClass}`}>
             {category.count}
           </div>

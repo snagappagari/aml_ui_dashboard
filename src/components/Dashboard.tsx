@@ -19,6 +19,8 @@ const Dashboard: React.FC = () => {
     if (hours < 18) return 'Good Afternoon';
     return 'Good Evening';
   };
+  
+  const userLogin = JSON.parse(sessionStorage.getItem("userLogin") || "{}");
 
   useEffect(()=>{
     getLatestLogin();
@@ -81,7 +83,8 @@ const Dashboard: React.FC = () => {
             <SubNavbar />
       <div className="flex justify-between items-center">
         <div>
-          <p className="text-sm text-gray-600">Hello Admin,</p>
+          <p className="text-sm text-gray-600">Hello {userLogin?.firstName?userLogin?.firstName:''},</p>
+          
           <h1 className="text-2xl">{getGreeting()}!</h1>
           <p className="text-xs text-gray-500">{dateString}</p>
         </div>
