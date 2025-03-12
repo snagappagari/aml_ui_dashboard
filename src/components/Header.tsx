@@ -10,21 +10,23 @@ interface HeaderProps {
 
 }
 
-const Header: React.FC<HeaderProps> = ({  }) => {
+const Header: React.FC<HeaderProps> = ({ }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [user, setUser] = useState<{ firstName: string; lastLogin: string }>({
     firstName: "",
     lastLogin: "",
   });
   const navigate = useNavigate(); // React Router navigation
-  useEffect(()=>{
+  useEffect(() => {
     getLatestLogin();
 
-  },[])
-  const getLatestLogin =()=>{
-    LoginService.getlatlogin().then((res)=>{
-      if(res){
-        setUser(res.data)
+  }, [])
+  const getLatestLogin = () => {
+    LoginService.getlatlogin().then((res) => {
+      if (res && res.data) {
+        setUser(res.data);
+        console.log(res.data)
+        sessionStorage.setItem("userLogin", JSON.stringify(res.data));
       }
     })
   }
@@ -40,10 +42,14 @@ const Header: React.FC<HeaderProps> = ({  }) => {
   return (
     <header className="flex justify-between items-center px-5 py-3 bg-white shadow relative">
       <div className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded flex items-center justify-center">
+        {/* <div className="w-8 h-8 rounded flex items-center justify-center">
           <img src={Logo} alt="Logo" className="w-6 h-6" />
         </div>
-        <span className="text-gray-800">Secure Connect</span>
+        <span className="text-gray-800">Secure Connect</span> */}
+        <div className=" items-center flex mb-2">
+          <img src={Logo} alt="Logo" className="w-8 h-8 mr-2" />
+          <span className="font-semibold text-gray-800">Secure Connect</span>
+        </div>
       </div>
 
       <div className="flex items-center gap-4">

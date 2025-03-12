@@ -11,5 +11,6 @@ getAlertLocation:"/api/v1/alerts/count-by-location"
 };
 
 export const TRANSACTION_URL={
-  getAllTransactions:"/api/v1/transactions"
+  getAllTransactions:"/api/v1/transactions",
+  getAllTransactionsSummary:"/api/v1/transactions/summary"
 }
