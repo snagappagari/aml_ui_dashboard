@@ -33,13 +33,45 @@ interface AlertDetailsProps {
 const TransactionDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBackToTable }) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
-  const handleCopy = (id: any) => {
-    navigator.clipboard.writeText(id).then(() => {
-      setShowTooltip(true);
-      setTimeout(() => setShowTooltip(false), 2000); // Hide tooltip after 2 sec
-    });
+  const handleCopy = async (id: any) => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      try {
+        await navigator.clipboard.writeText(id);
+        setShowTooltip(true);
+        setTimeout(() => setShowTooltip(false), 2000);
+      } catch (err) {
+        console.error("Clipboard API failed, using fallback", err);
+        fallbackCopy(id);
+      }
+    } else {
+      console.warn("Clipboard API not supported, using fallback");
+      fallbackCopy(id);
+    }
   };
 
+  const fallbackCopy = (text: string) => {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.style.position = "fixed"; // Prevents scrolling to the element
+    textarea.style.opacity = "0"; // Hides the textarea
+    document.body.appendChild(textarea);
+    textarea.select();
+
+    try {
+      const successful = document.execCommand("copy");
+
+      if (!successful) {
+        throw new Error("Copy command was unsuccessful");
+      } else {
+        setShowTooltip(true);
+      }
+    } catch (err) {
+      console.error("Fallback: Copying text failed", err);
+      alert("Copy failed. Please try manually.");
+    } finally {
+      document.body.removeChild(textarea);
+    }
+  };
 
 
 

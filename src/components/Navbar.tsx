@@ -1,9 +1,11 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
-  const [activeId, setActiveId] = React.useState("homepage");
+  const location = useLocation();
+  console.log(location, 'location')
+  const [activeId, setActiveId] = React.useState(location?.pathname);
 
   const navItems = [
     { id: "homepage", label: "Homepage", path: "/dashboard" },
@@ -13,21 +15,26 @@ const Navbar: React.FC = () => {
     { id: "reports", label: "Reports", path: "/reports" },
     { id: "manual", label: "Data Processing", path: "/data-processing" },
   ];
+  useEffect(() => {
+    setActiveId(location?.pathname)
+  }, [location])
 
   const handleNavigation = (id: string, path: string) => {
     setActiveId(id);
     navigate(path);
   };
+  console.log(JSON.stringify(navItems), 'navItems')
 
   return (
     <div className="flex justify-center px-4 py-2">
       <nav className="bg-white max-w-4xl shadow-lg rounded-full">
         <div className="flex items-center">
           {navItems.map((item) => (
-            <button
+
+            < button
               key={item.id}
               onClick={() => handleNavigation(item.id, item.path)}
-              className={`px-4 py-2 text-xs font-medium rounded-full transition-colors focus:outline-none ${activeId === item.id
+              className={`px-4 py-2 text-xs font-medium rounded-full transition-colors focus:outline-none ${activeId === item.path
                 ? "bg-blue-500 text-white"
                 : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
                 }`}
@@ -36,8 +43,8 @@ const Navbar: React.FC = () => {
             </button>
           ))}
         </div>
-      </nav>
-    </div>
+      </nav >
+    </div >
   );
 };
 
