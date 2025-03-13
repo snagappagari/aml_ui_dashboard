@@ -1,25 +1,26 @@
 import React, { useState, useRef } from 'react';
 import Upload from "../assets/Upload.svg";
+import { Alert } from '../commonUtils/Interface';
 
 // Define the Alert type
-interface Alert {
-  id: string;
-  description: string;
-  date: string;
-  rule: string;
-  // Additional properties for detail view
-  alertStatus?: string;
-  amount?: string;
-  transactionType?: string;
-  network?: string;
-  country?: string;
-  ruleVersion?: string;
-  owner?: string;
-  caseID?: string;
-  downloadFile?: string;
-  transactionId?: string;
+// interface Alert {
+//   id: string;
+//   description: string;
+//   date: string;
+//   rule: string;
+//   // Additional properties for detail view
+//   alertStatus?: string;
+//   amount?: string;
+//   transactionType?: string;
+//   network?: string;
+//   country?: string;
+//   ruleVersion?: string;
+//   owner?: string;
+//   caseID?: string;
+//   downloadFile?: string;
+//   transactionId?: string;
 
-}
+// }
 
 interface AlertDetailsProps {
   selectedAlert: Alert | null;
@@ -37,12 +38,47 @@ const AlertDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBackToTabl
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
 
-  const handleCopy = (id: any) => {
-    navigator.clipboard.writeText(id).then(() => {
-      setShowTooltip(true);
-      setTimeout(() => setShowTooltip(false), 2000); // Hide tooltip after 2 sec
-    });
+  const handleCopy = async (id: any) => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      try {
+        await navigator.clipboard.writeText(id);
+        setShowTooltip(true);
+        setTimeout(() => setShowTooltip(false), 2000);
+      } catch (err) {
+        console.error("Clipboard API failed, using fallback", err);
+        fallbackCopy(id);
+      }
+    } else {
+      console.warn("Clipboard API not supported, using fallback");
+      fallbackCopy(id);
+    }
   };
+
+  const fallbackCopy = (text: string) => {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.style.position = "fixed"; // Prevents scrolling to the element
+    textarea.style.opacity = "0"; // Hides the textarea
+    document.body.appendChild(textarea);
+    textarea.select();
+
+    try {
+      const successful = document.execCommand("copy");
+      setShowTooltip(true);
+      if (!successful) {
+        throw new Error("Copy command was unsuccessful");
+      } else {
+        setShowTooltip(true);
+      }
+    } catch (err) {
+      console.error("Fallback: Copying text failed", err);
+      alert("Copy failed. Please try manually.");
+    } finally {
+      document.body.removeChild(textarea);
+    }
+  };
+
+
 
   // Function to handle comment submission
   const handleAddComment = () => {
