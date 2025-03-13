@@ -19,16 +19,16 @@ const Dashboard: React.FC = () => {
     if (hours < 18) return 'Good Afternoon';
     return 'Good Evening';
   };
-  
+
   const userLogin = JSON.parse(sessionStorage.getItem("userLogin") || "{}");
 
-  useEffect(()=>{
+  useEffect(() => {
     getLatestLogin();
-
-  },[])
-  const getLatestLogin =()=>{
-    LoginService.getlatlogin().then((res)=>{
-      if(res){
+    console.log(alertData)
+  }, [])
+  const getLatestLogin = () => {
+    LoginService.getlatlogin().then((res) => {
+      if (res) {
         console.log(res)
       }
     })
@@ -67,7 +67,7 @@ const Dashboard: React.FC = () => {
       caseID: 'Not Assigned',
       downloadFile: ''
     };
-    
+
     setSelectedAlert(enhancedAlert);
     setShowDetailView(true);
   };
@@ -80,35 +80,35 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="space-y-5">
-            <SubNavbar />
+      <SubNavbar />
       <div className="flex justify-between items-center">
         <div>
-          <p className="text-sm text-gray-600">Hello {userLogin?.firstName?userLogin?.firstName:''},</p>
-          
+          <p className="text-sm text-gray-600">Hello {userLogin?.firstName ? userLogin?.firstName : ''},</p>
+
           <h1 className="text-2xl">{getGreeting()}!</h1>
           <p className="text-xs text-gray-500">{dateString}</p>
         </div>
         <AlertSummary />
       </div>
-      
+
       {!showDetailView ? (
         // Show the table and map when not in detail view
         <div className="flex gap-5">
           <div className="flex-1 bg-white rounded-lg shadow p-5">
-            <AlertsTable 
-              onRowClick={handleAlertRowClick}  
-              setAlertData={setAlertData} 
+            <AlertsTable
+              onRowClick={handleAlertRowClick}
+              setAlertData={setAlertData}
             />
           </div>
           <div className="flex-1 bg-white rounded-lg shadow p-5">
-            <IndiaMap alertData={alertData} />
+            <IndiaMap />
           </div>
         </div>
       ) : (
         // Show the detail view when an alert is selected
-        <AlertDetails 
-          selectedAlert={selectedAlert} 
-          onBackToTable={handleBackToTable} 
+        <AlertDetails
+          selectedAlert={selectedAlert}
+          onBackToTable={handleBackToTable}
         />
       )}
     </div>
