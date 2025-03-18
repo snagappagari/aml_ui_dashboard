@@ -7,7 +7,7 @@ import { AlertLocation } from "../commonUtils/Interface";
 
 // Priority color mapping
 const getPriorityColor = (priority: string) => {
-  switch(priority.toLowerCase()) {
+  switch (priority.toLowerCase()) {
     case 'high':
       return 'bg-red-600';
     case 'medium':
@@ -87,8 +87,8 @@ const IndiaMap: React.FC = () => {
   }
 
   // Calculate map center based on data or default to a central position
-  const mapCenter = alertData.length > 0 
-    ? [alertData[0].latitude, alertData[0].longitude] 
+  const mapCenter = alertData.length > 0
+    ? [alertData[0].latitude, alertData[0].longitude]
     : [20, 78]; // Default center for India
 
   return (
@@ -101,9 +101,9 @@ const IndiaMap: React.FC = () => {
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
         {alertData.map((location, index) => (
-          <Marker 
-            key={index} 
-            position={[location.latitude, location.longitude]} 
+          <Marker
+            key={index}
+            position={[location.latitude, location.longitude]}
             icon={createPriorityIcon(location.priority)}
           >
             <Popup>
