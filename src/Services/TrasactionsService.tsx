@@ -1,4 +1,4 @@
-import { BASE_URL } from "../commonUtils/Base";
+import { BASE_TRANS_URL, BASE_URL } from "../commonUtils/Base";
 import axios from "axios";
 import { TRANSACTION_URL } from "../commonUtils/ApiConstants";
 
@@ -12,6 +12,9 @@ class TrasactionsService {
   }
   getAllTransactionsSummary() {
     return axios.get(BASE_URL + TRANSACTION_URL.getAllTransactionsSummary);
+  }
+  transaction(obj: any) {
+    return axios.post(BASE_TRANS_URL + TRANSACTION_URL.transaction, obj);
   }
 }
 

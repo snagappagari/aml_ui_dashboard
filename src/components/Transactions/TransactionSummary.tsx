@@ -16,8 +16,8 @@ const AlertSummary: React.FC = () => {
     { id: 'total', label: 'TOTAL', count: dataSummary.totalCount, colorClass: 'text-blue-500' },
     { id: 'completed', label: 'COMPLETED', count: dataSummary.status.COMPLETED, colorClass: 'text-green-500' },
     { id: 'failed', label: 'FAILED', count: dataSummary.status.FAILED, colorClass: 'text-red-500' },
-    { id: 'low', label: 'LOW', count: dataSummary.status.CANCELLED, colorClass: 'text-red-500' },
-    { id: 'critical', label: 'CRITICAL', count: dataSummary.status.PENDING, colorClass: 'text-purple-500' }
+    { id: 'low', label: 'CANCELLED', count: dataSummary.status.CANCELLED, colorClass: 'text-red-500' },
+    { id: 'critical', label: 'PENDING', count: dataSummary.status.PENDING, colorClass: 'text-purple-500' }
   ];
 
   useEffect(() => {

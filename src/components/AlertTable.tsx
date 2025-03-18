@@ -123,24 +123,24 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick, setAlertData }) =
   };
 
   // Enhanced Animated Loader Component
-  const AnimatedLoader = () => (
-    <div className="flex flex-col items-center justify-center h-48">
-      <div className="relative">
-        {/* Outer spinning circle */}
-        <div className="w-16 h-16 rounded-full border-4 border-blue-200 border-t-blue-500 animate-spin"></div>
+  // const AnimatedLoader = () => (
+  //   <div className="flex flex-col items-center justify-center h-48">
+  //     <div className="relative">
+  //       {/* Outer spinning circle */}
+  //       <div className="w-16 h-16 rounded-full border-4 border-blue-200 border-t-blue-500 animate-spin"></div>
 
-        {/* Inner pulsing circle */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-blue-500 rounded-full animate-pulse opacity-70"></div>
+  //       {/* Inner pulsing circle */}
+  //       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-blue-500 rounded-full animate-pulse opacity-70"></div>
 
-        {/* Dots circling around */}
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-blue-600 rounded-full animate-bounce"></div>
-        <div className="absolute top-1/2 right-0 transform translate-y-1/2 w-3 h-3 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-3 h-3 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
-        <div className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-1/2 w-3 h-3 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0.6s' }}></div>
-      </div>
-      <p className="mt-4 text-blue-600 font-medium animate-pulse">Loading alerts...</p>
-    </div>
-  );
+  //       {/* Dots circling around */}
+  //       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-blue-600 rounded-full animate-bounce"></div>
+  //       <div className="absolute top-1/2 right-0 transform translate-y-1/2 w-3 h-3 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+  //       <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-3 h-3 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+  //       <div className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-1/2 w-3 h-3 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0.6s' }}></div>
+  //     </div>
+  //     <p className="mt-4 text-blue-600 font-medium animate-pulse">Loading alerts...</p>
+  //   </div>
+  // );
 
   // Generate pagination numbers
   const renderPaginationNumbers = () => {
@@ -223,7 +223,8 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick, setAlertData }) =
         </div>
       </div>
       {loading ? (
-        <AnimatedLoader />
+        // <AnimatedLoader />
+        <></>
       ) : error ? (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
           {error}
