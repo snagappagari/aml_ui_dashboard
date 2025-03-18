@@ -1,26 +1,9 @@
 import React, { useState, useRef } from 'react';
 import Upload from "../assets/Upload.svg";
 import { Alert } from '../commonUtils/Interface';
-
-// Define the Alert type
-// interface Alert {
-//   id: string;
-//   description: string;
-//   date: string;
-//   rule: string;
-//   // Additional properties for detail view
-//   alertStatus?: string;
-//   amount?: string;
-//   transactionType?: string;
-//   network?: string;
-//   country?: string;
-//   ruleVersion?: string;
-//   owner?: string;
-//   caseID?: string;
-//   downloadFile?: string;
-//   transactionId?: string;
-
-// }
+import PromoteToCaseModal, { PromoteToCaseData } from '../Models/CaseModel';
+import axios from 'axios'; // Import axios for HTTP requests
+import SuccessModal from '../Models/SuccessModel';
 
 interface AlertDetailsProps {
   selectedAlert: Alert | null;
@@ -32,13 +15,21 @@ const AlertDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBackToTabl
   const [isCommentEnabled, setIsCommentEnabled] = useState(false);
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState<Array<{ text: string, date: string }>>([]);
+  
   // State for file upload
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  // Ref for file input
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  // State for tooltip
   const [showTooltip, setShowTooltip] = useState(false);
+  const [hasBeenPromoted, setHasBeenPromoted] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  // State for promote to case modal
+  const [isPromoteModalOpen, setIsPromoteModalOpen] = useState(false);
+  // State for loading/processing
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  const handleCopy = async (id: any) => {
+  const handleCopy = async (id: string) => {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       try {
         await navigator.clipboard.writeText(id);
@@ -64,11 +55,11 @@ const AlertDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBackToTabl
 
     try {
       const successful = document.execCommand("copy");
-      setShowTooltip(true);
       if (!successful) {
         throw new Error("Copy command was unsuccessful");
       } else {
         setShowTooltip(true);
+        setTimeout(() => setShowTooltip(false), 2000);
       }
     } catch (err) {
       console.error("Fallback: Copying text failed", err);
@@ -77,8 +68,6 @@ const AlertDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBackToTabl
       document.body.removeChild(textarea);
     }
   };
-
-
 
   // Function to handle comment submission
   const handleAddComment = () => {
@@ -111,6 +100,40 @@ const AlertDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBackToTabl
     }
   };
 
+  // Function to open promote to case modal
+  const openPromoteModal = () => {
+    setIsPromoteModalOpen(true);
+  };
+
+  // Function to close promote to case modal
+  const closePromoteModal = () => {
+    setIsPromoteModalOpen(false);
+  };
+  const closeSuccessModal = () => {
+    setShowSuccessModal(false);
+  };
+
+  // Function to handle promote to case submission using axios instead of fetch
+  const handlePromoteToCase = (data: PromoteToCaseData) => {
+    setIsProcessing(true);
+    
+    axios.post('http://10.80.3.53:31117/api/v1/cases', data)
+      .then(response => {
+        console.log('Success:', response.data);
+        closePromoteModal();
+        // Set the promoted flag to true on success
+        setHasBeenPromoted(true);
+        setShowSuccessModal(true);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to promote alert to case. Please try again.');
+      })
+      .finally(() => {
+        setIsProcessing(false);
+      });
+  };
+
   if (!selectedAlert) {
     return null;
   }
@@ -137,14 +160,17 @@ const AlertDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBackToTabl
             <button className="bg-white text-gray-700 border border-gray-300 rounded-md px-4 py-2 mr-2 text-sm font-medium hover:bg-gray-50">
               Re-open
             </button>
-            <button className="bg-blue-600 text-white rounded-md px-4 py-2 text-sm font-medium hover:bg-blue-700">
-              Escalate to case
+            <button
+              className="bg-blue-600 text-white rounded-md px-4 py-2 text-sm font-medium hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+              onClick={openPromoteModal}
+              disabled={isProcessing || hasBeenPromoted}
+            >
+              {isProcessing ? 'Processing...' : hasBeenPromoted ? 'Promoted to Case' : 'Escalate to case'}
             </button>
           </div>
         </div>
 
         <div className="mb-6">
-          <h3 className="text-lg mb-4">Overview</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
               <h4 className="text-sm mb-1">Alert ID</h4>
@@ -154,10 +180,6 @@ const AlertDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBackToTabl
               <h4 className="text-sm mb-1">Alert Date</h4>
               <p className="text-sm">{selectedAlert.date}</p>
             </div>
-            {/* <div>
-              <h4 className="text-sm mb-1">Amount Exceeded (₹)</h4>
-              <p className="text-sm">{selectedAlert.amount}</p>
-            </div> */}
             <div>
               <h4 className="text-sm mb-1">Alert Status</h4>
               <p className="text-sm">{selectedAlert.alertStatus}</p>
@@ -170,12 +192,7 @@ const AlertDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBackToTabl
               <h4 className="text-sm mb-1">Rule ID</h4>
               <p className="text-sm">{selectedAlert.rule}</p>
             </div>
-            {/* <div>
-              <h4 className="text-sm mb-1">Transaction ID</h4>
-              <p className="text-sm">{selectedAlert.transactionId}</p>
-            </div> */}
             <div className="flex flex-col gap-1 relative">
-              {/* Title & Icon in a Row */}
               <div className="flex items-center gap-1">
                 <h4 className="text-sm mb-1">Transaction ID</h4>
 
@@ -196,7 +213,6 @@ const AlertDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBackToTabl
                     />
                   </svg>
 
-                  {/* Black Tooltip */}
                   {showTooltip && (
                     <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded-md">
                       Copied!
@@ -205,17 +221,12 @@ const AlertDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBackToTabl
                 </div>
               </div>
 
-              {/* Customer ID Value Below */}
               <p className="text-sm font-normal font-lexend">{selectedAlert.transactionId}</p>
             </div>
             <div>
               <h4 className="text-sm mb-1">Transaction Type</h4>
               <p className="text-sm">{selectedAlert.transactionType}</p>
             </div>
-            {/* <div>
-              <h4 className="text-sm mb-1">Transaction Type Identifier</h4>
-              <p className="text-sm">6058</p>
-            </div> */}
             <div>
               <h4 className="text-sm mb-1">Network</h4>
               <p className="text-sm">{selectedAlert.network}</p>
@@ -312,19 +323,26 @@ const AlertDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBackToTabl
               </div>
             ) : (
               <>
-                {/* <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mx-auto mb-4 text-gray-400">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                  <polyline points="17 8 12 3 7 8"></polyline>
-                  <line x1="12" y1="3" x2="12" y2="15"></line>
-                </svg> */}
                 <img src={Upload} alt="Upload" className="mx-auto mb-4 w-15 h-15" />
                 <p className="text-gray-600 mb-1">Click to upload</p>
-                <p className="text-xs text-gray-500">(Max. file size 25MB)</p>
+                <p className="text-xs text-gray-500">(Max. file size 1GB)</p>
               </>
             )}
           </div>
         </div>
       </div>
+
+      {/* Render the PromoteToCaseModal component */}
+      <PromoteToCaseModal
+        isOpen={isPromoteModalOpen}
+        onClose={closePromoteModal}
+        alert={selectedAlert}
+        onPromote={handlePromoteToCase}
+      />
+            <SuccessModal 
+        isOpen={showSuccessModal} 
+        onClose={closeSuccessModal} 
+      />
     </div>
   );
 };

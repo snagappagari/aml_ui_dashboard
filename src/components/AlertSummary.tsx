@@ -61,29 +61,29 @@ const AlertSummary: React.FC = () => {
   }
 
   return (
-    // <div className="flex items-center gap-x-2">
-    //   {alertCategories.map((category) => (
-    //     <div key={category.id} className="bg-white rounded-md shadow p-3 flex flex-col items-center w-20">
-    //       <div className="text-xs text-gray-600">{category.label}</div>
-    //       <div className={`text-lg font-semibold ${category.colorClass}`}>
-    //         {category.count}
-    //       </div>
-    //     </div>
-    //   ))}
-    // </div>
     <div className="flex items-center gap-x-2">
       {alertCategories.map((category) => (
-        <div
-          key={category.id}
-          className="bg-white rounded-md border p-3 flex flex-col items-right w-[180px] h-[70px]"
-        >
-          <div className="text-sm font-medium text-gray-600">{category.label}</div>
+        <div key={category.id} className="bg-white rounded-md shadow p-3 flex flex-col items-center w-20">
+          <div className="text-xs text-gray-600">{category.label}</div>
           <div className={`text-lg font-semibold ${category.colorClass}`}>
             {category.count}
           </div>
         </div>
       ))}
     </div>
+    // <div className="flex items-center gap-x-2">
+    //   {alertCategories.map((category) => (
+    //     <div
+    //       key={category.id}
+    //       className="bg-white rounded-md border p-3 flex flex-col items-right w-[180px] h-[70px]"
+    //     >
+    //       <div className="text-sm font-medium text-gray-600">{category.label}</div>
+    //       <div className={`text-lg font-semibold ${category.colorClass}`}>
+    //         {category.count}
+    //       </div>
+    //     </div>
+    //   ))}
+    // </div>
   );
 };
 

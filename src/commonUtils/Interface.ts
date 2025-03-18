@@ -8,13 +8,14 @@ export interface Alert {
   alertStatus?: string;
   amount?: string;
   transactionType?: string;
+  region:string;
   network?: string;
   country?: string;
   ruleVersion?: string;
   owner?: string;
   caseID?: string;
   downloadFile?: string;
-  transactionId?: string;
+  transactionId: string;
 }
 
 export interface ApiAlert {
@@ -75,4 +76,24 @@ export interface PaginationState {
   totalPages: number;
   totalElements: number;
   pageSize: number;
+}
+
+export interface CaseData {
+  caseId: string;
+  description: string;
+  transactionId: string;
+  caseType: string;
+  alertId: string;
+  status: string;
+  alertSent: boolean;
+  caseOwner: string;
+  priority: string | null;
+  network: string;
+  city: string;
+  country: string;
+  region: string;
+  attachments: string | null;
+  comments: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
