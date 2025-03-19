@@ -197,7 +197,7 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick, setAlertData }) =
       </div> */}
 
       <div className="flex items-center gap-6 mb-4">
-        <p className="text-black text-xl font-medium">Recent Alerts</p>
+        <p className="text-black font-regular">Recent Alerts</p>
 
         <div className="relative">
           <input
