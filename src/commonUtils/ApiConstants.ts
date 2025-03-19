@@ -31,13 +31,7 @@ export const CUSTOMER_MANAGEMENT_URL = {
 
 
 }
-export const CASE_MANAGEMANT_URL = {
-  getAllCases: "/api/v1/cases",
-  getCaseSummary: "/api/v1/transactions/summary",
-  caseCount: "/api/v1/cases/case-count",
-  caseComments: "/api/v1/comments",
-  uploadDcuments: '/api/v1/attachments/upload'
-}
+
 
 export const CASE_URL = {
   createcase: "/api/v1/cases"
