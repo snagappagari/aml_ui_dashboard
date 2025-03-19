@@ -178,7 +178,7 @@ const ManualProcessing: React.FC = () => {
       <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center mb-6">
         <div className="text-gray-500 mb-4">
           <img src={Upload} alt="Upload" className="mx-auto mb-4 w-15 h-15" />
-          {selectedFile ? `📂 ${selectedFile.name}` : 'Click to upload file (Max. file size 20 MB)'}
+          {selectedFile ? `📂 ${selectedFile.name}` : 'Click to upload file (Max. file size 1GB)'}
         </div>
         
         <input 

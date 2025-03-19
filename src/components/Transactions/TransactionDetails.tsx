@@ -107,7 +107,7 @@ const TransactionDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBack
           </svg>
 
           <div className="relative">
-            <p className="text-black text-xl font-medium">List of Transactions</p>
+            <p className="text-black text-xl font-medium">Transaction Details</p>
           </div>
         </div>
 
@@ -115,22 +115,22 @@ const TransactionDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBack
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">Transaction Id</h4>
-              <p className="text-sm mb-1 font-normal font-lexend">{selectedAlert.transactionId}</p>
+              <h4 className="text-sm mb-1">Transaction Id</h4>
+              <p className="text-sm mb-1">{selectedAlert.transactionId}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">Transaction Type</h4>
-              <p className="text-sm mb-1 font-normal font-lexend">{selectedAlert.transactionType}</p>
+              <h4 className="text-sm mb-1">Transaction Type</h4>
+              <p className="text-sm mb-1">{selectedAlert.transactionType}</p>
             </div>
 
             {/* <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">Status</h4>
-              <p className="text-sm mb-1 font-normal font-lexend">{selectedAlert.status}</p>
+              <h4 className="text-sm mb-1">Status</h4>
+              <p className="text-sm mb-1">{selectedAlert.status}</p>
             </div> */}
             <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">Status</h4>
+              <h4 className="text-sm mb-1">Status</h4>
               <p
-                className={`text-sm mb-1 font-normal font-lexend ${selectedAlert.status === "FAILED" || selectedAlert.status === "CANCELLED"
+                className={`text-sm mb-1 ${selectedAlert.status === "FAILED" || selectedAlert.status === "CANCELLED"
                   ? "text-red-500"
                   : selectedAlert.status === "COMPLETED"
                     ? "text-green-500"
@@ -147,19 +147,19 @@ const TransactionDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBack
             </div>
 
             <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">Time Stamp</h4>
-              <p className="text-sm mb-1 font-normal font-lexend">{formatDate(selectedAlert?.timestamp)}</p>
+              <h4 className="text-sm mb-1">Time Stamp</h4>
+              <p className="text-sm mb-1">{formatDate(selectedAlert?.timestamp)}</p>
             </div>
 
             {/* <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">Customer Id</h4>
-              <p className="text-sm mb-1 font-normal font-lexend">{selectedAlert.customerId}</p>
+              <h4 className="text-sm mb-1">Customer Id</h4>
+              <p className="text-sm mb-1">{selectedAlert.customerId}</p>
             </div> */}
 
             <div className="flex flex-col gap-1 relative">
               {/* Title & Icon in a Row */}
               <div className="flex items-center gap-1">
-                <h4 className="text-sm font-light font-lexend">Customer Id</h4>
+                <h4 className="text-sm">Customer Id</h4>
 
                 <div className="relative">
                   <svg
@@ -188,38 +188,38 @@ const TransactionDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBack
               </div>
 
               {/* Customer ID Value Below */}
-              <p className="text-sm font-normal font-lexend">{selectedAlert.customerId}</p>
+              <p className="text-sm">{selectedAlert.customerId}</p>
             </div>
 
 
             <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">Currency</h4>
-              <p className="text-sm mb-1 font-normal font-lexend">{selectedAlert.currency}</p>
+              <h4 className="text-sm mb-1">Currency</h4>
+              <p className="text-sm mb-1">{selectedAlert.currency}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">Amount</h4>
-              <p className="text-sm mb-1 font-normal font-lexend">{selectedAlert.amount}</p>
+              <h4 className="text-sm mb-1">Amount</h4>
+              <p className="text-sm mb-1">{selectedAlert.amount}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">Fee</h4>
-              <p className="text-sm mb-1 font-normal font-lexend">{selectedAlert.fee}</p>
+              <h4 className="text-sm mb-1">Fee</h4>
+              <p className="text-sm mb-1">{selectedAlert.fee}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">Merchant Id</h4>
-              <p className="text-sm mb-1 font-normal font-lexend">{selectedAlert.merchantId}</p>
+              <h4 className="text-sm mb-1">Merchant Id</h4>
+              <p className="text-sm mb-1">{selectedAlert.merchantId}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">Merchant Category</h4>
-              <p className="text-sm mb-1 font-normal font-lexend">{selectedAlert.merchantCategory}</p>
+              <h4 className="text-sm mb-1">Merchant Category</h4>
+              <p className="text-sm mb-1">{selectedAlert.merchantCategory}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">Destination Account</h4>
-              <p className="text-sm mb-1 font-normal font-lexend">{selectedAlert.destinationAccount}</p>
+              <h4 className="text-sm mb-1">Destination Account</h4>
+              <p className="text-sm mb-1">{selectedAlert.destinationAccount}</p>
             </div>
             {/* <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">Direction</h4>
+              <h4 className="text-sm mb-1">Direction</h4>
               <p
-                className={`text-sm mb-1 font-normal font-lexend ${selectedAlert.direction === "CREDIT"
+                className={`text-sm mb-1 ${selectedAlert.direction === "CREDIT"
                   ? "text-green-500"
                   : selectedAlert.direction === "DEBIT"
                     ? "text-red-500"
@@ -233,7 +233,7 @@ const TransactionDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBack
 
             <div>
               {/* Title (Direction) */}
-              <h4 className="text-sm mb-1 font-light font-lexend">Direction</h4>
+              <h4 className="text-sm mb-1">Direction</h4>
 
               {/* Direction Value + Arrow in a Straight Line */}
               <div className="flex items-center gap-1">
@@ -280,7 +280,7 @@ const TransactionDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBack
 
                 {/* Direction Value */}
                 <p
-                  className={`text-sm mb-1 font-normal font-lexend ${selectedAlert.direction === "CREDIT"
+                  className={`text-sm mb-1 ${selectedAlert.direction === "CREDIT"
                     ? "text-green-500"
                     : selectedAlert.direction === "DEBIT"
                       ? "text-red-500"
@@ -295,26 +295,26 @@ const TransactionDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBack
 
 
             <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">Source Account</h4>
-              <p className="text-sm mb-1 font-normal font-lexend">{selectedAlert.sourceAccount}</p>
+              <h4 className="text-sm mb-1">Source Account</h4>
+              <p className="text-sm mb-1">{selectedAlert.sourceAccount}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">country</h4>
-              <p className="text-sm mb-1 font-normal font-lexend">{selectedAlert.country}</p>
+              <h4 className="text-sm mb-1">country</h4>
+              <p className="text-sm mb-1">{selectedAlert.country}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">Region</h4>
-              <p className="text-sm mb-1 font-normal font-lexend">{selectedAlert.region}</p>
+              <h4 className="text-sm mb-1">Region</h4>
+              <p className="text-sm mb-1">{selectedAlert.region}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">City</h4>
-              <p className="text-sm mb-1 font-normal font-lexend">{selectedAlert.city}</p>
+              <h4 className="text-sm mb-1">City</h4>
+              <p className="text-sm mb-1">{selectedAlert.city}</p>
             </div>
 
 
             <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">Description</h4>
-              <p className="text-sm mb-1 font-normal font-lexend">{selectedAlert.description}</p>
+              <h4 className="text-sm mb-1">Description</h4>
+              <p className="text-sm mb-1">{selectedAlert.description}</p>
             </div>
 
 
@@ -322,32 +322,32 @@ const TransactionDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBack
 
             {/* 
             <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">Transaction ID</h4>
-              <p className="text-sm mb-1 font-normal font-lexend">{selectedAlert.transactionId}</p>
+              <h4 className="text-sm mb-1">Transaction ID</h4>
+              <p className="text-sm mb-1">{selectedAlert.transactionId}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">Transaction Type</h4>
-              <p className="text-sm mb-1 font-normal font-lexend">{selectedAlert.transactionType}</p>
+              <h4 className="text-sm mb-1">Transaction Type</h4>
+              <p className="text-sm mb-1">{selectedAlert.transactionType}</p>
             </div>
 
             <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">Network</h4>
-              <p className="text-sm mb-1 font-normal font-lexend">{selectedAlert.network}</p>
+              <h4 className="text-sm mb-1">Network</h4>
+              <p className="text-sm mb-1">{selectedAlert.network}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">Country</h4>
-              <p className="text-sm mb-1 font-normal font-lexend">{selectedAlert.country}</p>
+              <h4 className="text-sm mb-1">Country</h4>
+              <p className="text-sm mb-1">{selectedAlert.country}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">Alert Owner</h4>
-              <p className="text-sm mb-1 font-normal font-lexend">{selectedAlert.owner}</p>
+              <h4 className="text-sm mb-1">Alert Owner</h4>
+              <p className="text-sm mb-1">{selectedAlert.owner}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">Last Updated</h4>
-              <p className="text-sm mb-1 font-normal font-lexend">{selectedAlert.date}</p>
+              <h4 className="text-sm mb-1">Last Updated</h4>
+              <p className="text-sm mb-1">{selectedAlert.date}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">Uploaded File</h4>
+              <h4 className="text-sm mb-1">Uploaded File</h4>
               {selectedAlert.downloadFile ? (
                 <p className="text-sm text-blue-600 cursor-pointer">{selectedAlert.downloadFile}</p>
               ) : (
@@ -355,12 +355,12 @@ const TransactionDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBack
               )}
             </div>
             <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">Rule Version</h4>
-              <p className="text-sm mb-1 font-normal font-lexend">{selectedAlert.ruleVersion}</p>
+              <h4 className="text-sm mb-1">Rule Version</h4>
+              <p className="text-sm mb-1">{selectedAlert.ruleVersion}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1 font-light font-lexend">Case ID</h4>
-              <p className="text-sm mb-1 font-normal font-lexend">{selectedAlert.caseID}</p>
+              <h4 className="text-sm mb-1">Case ID</h4>
+              <p className="text-sm mb-1">{selectedAlert.caseID}</p>
             </div> */}
           </div>
         </div>

@@ -31,3 +31,7 @@ export const CUSTOMER_MANAGEMENT_URL = {
 
 
 }
+
+export const CASE_URL = {
+  createcase: "/api/v1/cases"
+}

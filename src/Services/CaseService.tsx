@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CASE_MANAGEMANT_URL } from "../commonUtils/ApiConstants";
+import { CASE_MANAGEMANT_URL, CASE_URL } from "../commonUtils/ApiConstants";
 import { BASE_URL } from "../commonUtils/Base";
 
 class CaseService {
@@ -16,9 +16,14 @@ class CaseService {
   caseComments(obj: any) {
     return axios.post(BASE_URL + CASE_MANAGEMANT_URL.caseComments, obj);
   }
+  async login(obj: any) {
+    const response = await axios.post(BASE_URL + CASE_URL.createcase, obj);
+    return response.data;
+  }
   // transaction(obj: any) {
   //   return axios.post(BASE_TRANS_URL + TRANSACTION_URL.transaction, obj);
   // }
 }
 
-export default new CaseService();
+export default new CaseService()
+
