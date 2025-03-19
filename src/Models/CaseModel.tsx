@@ -35,12 +35,12 @@ const PromoteToCaseModal: React.FC<PromoteToCaseModalProps> = ({ isOpen, onClose
     const data: PromoteToCaseData = {
       description: caseDescription || '',
       transactionId: alert.transactionId || '',
-      caseType: '', // Ensure this is a valid caseType value
+      caseType: 'AML', // Ensure this is a valid caseType value
       alertId: alert.id || '',
       status: alert.alertStatus || '', // Set a valid status value or adjust dynamically
       alertSent: false,
       caseOwner: alert.owner || '',
-      priority: caseSeverity as 'LOW' | 'MEDIUM' | 'HIGH' || 'LOW', // Ensure this matches the allowed priority types
+      priority: caseSeverity as 'LOW' | 'MEDIUM' | 'HIGH' || 'CRITICAL', // Ensure this matches the allowed priority types
       network: alert.network || '',
       city: '',
       country: alert.country || '',

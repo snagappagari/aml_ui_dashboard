@@ -21,9 +21,12 @@ const getPriorityColor = (priority: string) => {
   }
 };
 
+const priorityOptions = ["All Priorities", "Critical", "High", "Medium", "Low"];
 
 const IndiaMap: React.FC = () => {
   const [alertData, setAlertData] = useState<AlertLocation[]>([]);
+  const [filteredAlertData, setFilteredAlertData] = useState<AlertLocation[]>([]);
+  const [selectedPriority, setSelectedPriority] = useState<string>("All Priorities");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -33,6 +36,7 @@ const IndiaMap: React.FC = () => {
         setIsLoading(true);
         const data = await AlertService.getAlertByLocation();
         setAlertData(data);
+        setFilteredAlertData(data);
         setIsLoading(false);
       } catch (err) {
         console.error("Error fetching alert data:", err);
@@ -44,19 +48,35 @@ const IndiaMap: React.FC = () => {
     fetchAlertData();
   }, []);
 
+  // Filter data when priority selection changes
+  useEffect(() => {
+    if (selectedPriority === "All Priorities") {
+      setFilteredAlertData(alertData);
+    } else {
+      const filtered = alertData.filter(
+        (alert) => alert.priority.toLowerCase() === selectedPriority.toLowerCase()
+      );
+      setFilteredAlertData(filtered);
+    }
+  }, [selectedPriority, alertData]);
+
   // Create a custom icon generator function
   const createPriorityIcon = (priority: string) => {
     return L.divIcon({
       className: 'custom-marker-icon',
       html: `
-        <div class="relative w-8 h-8">
+        <div class="relative w-6 h-6">
           <div class="${getPriorityColor(priority)} w-full h-full rounded-full opacity-75 animate-ping absolute"></div>
           <div class="${getPriorityColor(priority)} w-6 h-6 rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-2 border-white shadow-lg"></div>
         </div>
       `,
-      iconSize: [32, 32],
-      iconAnchor: [16, 16],
+      iconSize: [16, 16],
+      iconAnchor: [12, 12],
     });
+  };
+
+  const handlePriorityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedPriority(e.target.value);
   };
 
   if (isLoading) {
@@ -93,31 +113,49 @@ const IndiaMap: React.FC = () => {
 
   return (
     <div className="w-full">
-      <MapContainer
-        center={[mapCenter[0], mapCenter[1]] as [number, number]}
-        zoom={2}
-        style={{ height: "500px", width: "100%" }}
-      >
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      <div className="flex justify-between items-center mb-2">
+        <h2 className="font-regular text-gray-800">Alerts Map</h2>
+        <select
+          id="priorityFilter"
+          value={selectedPriority}
+          onChange={handlePriorityChange}
+          className="border border-gray-300 rounded-md px-1 py-1 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        >
+          {priorityOptions.map((priority) => (
+            <option key={priority} value={priority}>
+              {priority}
+            </option>
+          ))}
+        </select>
+      </div>
 
-        {alertData.map((location, index) => (
-          <Marker
-            key={index}
-            position={[location.latitude, location.longitude]}
-            icon={createPriorityIcon(location.priority)}
-          >
-            <Popup>
-              <div className="p-2">
-                <h3 className="font-bold text-lg">{location.city}</h3>
-                <p><span className="font-semibold">Country:</span> {location.country}</p>
-                <p><span className="font-semibold">Region:</span> {location.region}</p>
-                <p><span className="font-semibold">Priority:</span> {location.priority}</p>
-                <p><span className="font-semibold">Alert Count:</span> {location.count}</p>
-              </div>
-            </Popup>
-          </Marker>
-        ))}
-      </MapContainer>
+      <div className="border rounded-lg overflow-hidden shadow-md">
+        <MapContainer
+          center={[mapCenter[0], mapCenter[1]] as [number, number]}
+          zoom={2}
+          style={{ height: "500px", width: "100%" }}
+        >
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+
+          {filteredAlertData.map((location, index) => (
+            <Marker
+              key={index}
+              position={[location.latitude, location.longitude]}
+              icon={createPriorityIcon(location.priority)}
+            >
+              <Popup>
+                <div className="p-2">
+                  <h3 className="font-bold text-lg">{location.city}</h3>
+                  <p><span className="font-semibold">Country:</span> {location.country}</p>
+                  <p><span className="font-semibold">Region:</span> {location.region}</p>
+                  <p><span className="font-semibold">Priority:</span> {location.priority}</p>
+                  <p><span className="font-semibold">Alert Count:</span> {location.count}</p>
+                </div>
+              </Popup>
+            </Marker>
+          ))}
+        </MapContainer>
+      </div>
     </div>
   );
 };
