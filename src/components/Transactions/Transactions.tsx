@@ -6,7 +6,7 @@ import trans from '../../assets/images/Trans.svg'
 import Table from './Table';
 import { PaginationState } from '../../commonUtils/Interface';
 const COUNTRY_REGION_CITY_MAP: Record<string, { region: string; cities: string[] }> = {
-  USA: { region: "North America", cities: ["New York", "Los Angeles", "Chicago"] },
+  'United States': { region: "North America", cities: ["New York", "Los Angeles", "Chicago"] },
   India: { region: "Asia", cities: ["Mumbai", "Delhi", "Bangalore"] },
   Germany: { region: "Europe", cities: ["Berlin", "Munich", "Hamburg"] },
 };
