@@ -1,8 +1,4 @@
 import React, { useEffect, useState } from 'react';
-<<<<<<< HEAD
-import trans from '../../assets/images/Trans.svg';
-=======
->>>>>>> b99809e7b0c158b76e025dcf81d55776248f6b4d
 import { PaginationState } from '../../commonUtils/Interface';
 import CaseService from '../../Services/CaseService';
 import TrasactionsService from '../../Services/TrasactionsService';
@@ -369,29 +365,6 @@ const CaseManagement: React.FC = () => {
 
                     </span>
                   </button> */}
-<<<<<<< HEAD
-                                    <button
-                                        className="relative border-2 border-gray-200 text-white bg-white flex items-center justify-center 
-             transition-all duration-500 ease-out group w-[40px] h-[40px] rounded-full 
-             hover:w-[180px] hover:rounded-lg px-0 hover:px-6 overflow-hidden"
-                                        onClick={() => setIsTraction(true)}
-                                    >
-                                        <span className="relative flex items-center justify-center min-w-[60px]">
-                                            {/* Default icon (before hover) */}
-                                            <span className="absolute opacity-100 transition-opacity duration-500 ease-out group-hover:opacity-0">
-                                                <img src={trans} className="w-5 h-5" alt="Icon" />
-                                            </span>
-
-                                            {/* Hover text (fully visible in a single line) */}
-                                            <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out text-[#164164] 
-                     whitespace-nowrap">
-                                                Transaction Check
-                                            </span>
-                                        </span>
-                                    </button>
-=======
-
->>>>>>> b99809e7b0c158b76e025dcf81d55776248f6b4d
 
 
 

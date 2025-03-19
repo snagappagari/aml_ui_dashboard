@@ -22,7 +22,8 @@ export const CASE_MANAGEMANT_URL = {
   getCaseSummary: "/api/v1/transactions/summary",
   caseCount: "/api/v1/cases/case-count",
   caseComments: "/api/v1/comments",
-  uploadDcuments: '/api/v1/attachments/upload'
+  uploadDcuments: '/api/v1/attachments/upload',
+
 }
 
 

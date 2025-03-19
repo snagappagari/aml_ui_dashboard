@@ -8,7 +8,7 @@ export interface Alert {
   alertStatus?: string;
   amount?: string;
   transactionType?: string;
-  region:string;
+  region: string;
   network?: string;
   country?: string;
   ruleVersion?: string;
@@ -96,4 +96,10 @@ export interface CaseData {
   comments: string | null;
   createdAt: string;
   updatedAt: string;
+}
+export interface CaseHistoryDetails {
+  assignedDate: string; // ISO string format for date
+  caseOwner: string;
+  caseStatus: string // Use a union type for known statuses
+  updatedAt: string; // ISO string format for date
 }

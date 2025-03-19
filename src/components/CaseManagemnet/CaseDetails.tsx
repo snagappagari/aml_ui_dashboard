@@ -4,6 +4,9 @@ import { formatDate } from '../../commonUtils/FormateDate';
 import CaseService from '../../Services/CaseService';
 import { BASE_URL } from '../../commonUtils/Base';
 import { CASE_MANAGEMANT_URL } from '../../commonUtils/ApiConstants';
+import { Tooltip } from "react-tooltip";
+import "react-tooltip/dist/react-tooltip.css";
+import { CaseHistoryDetails } from '../../commonUtils/Interface';
 
 // Define the Alert type
 
@@ -60,8 +63,14 @@ const CaseDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, getDetails, o
   const [comments, setComments] = useState<string[]>([""]);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [submittedComments, setSubmittedComments] = useState<Comment[]>([])
+  const [history, setHistory] = useState<CaseHistoryDetails[]>([])
+  const [wachHistory, setwachHistory] = useState<CaseHistoryDetails[]>([])
   const [submittedfiles, setSubmittedfiles] = useState<Attachment[]>([])// Start with one input
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [progress, setProgress] = useState<number>(1); // 1: Open, 2: Assign, 3: In Progress, 4: Completed
+  const phases = ["New", "Open", "In Progress", "Closed"];
+
+  const progressPercentage = (progress / phases.length) * 100;
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -70,6 +79,20 @@ const CaseDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, getDetails, o
       handleFileUpload(file);
     }
   };
+  useEffect(() => {
+    if (selectedAlert?.status === 'NEW') {
+      setProgress(3);
+
+    } else if (selectedAlert?.status === 'OPEN') {
+      setProgress(2);
+    }
+    else if (selectedAlert?.status === 'IN PROGRESS') {
+      setProgress(3);
+    }
+    else if (selectedAlert?.status === 'CLOSED') {
+      setProgress(4);
+    }
+  })
 
   const handleFileUpload = (file: File) => {
     // Mock file upload function (Replace with actual API call)
@@ -172,11 +195,27 @@ const CaseDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, getDetails, o
 
     })
   }
+
+  useEffect(() => {
+    fetchData();
+  }, [])
+
+
+  const fetchData = () => {
+    CaseService.caseHistory(selectedAlert?.caseId).then((res) => {
+      if (res && res.status === 200) {
+        setHistory(res.data)
+      }
+
+    })
+  }
+  const handleMouseEnter = (label: string) => {
+    const list: CaseHistoryDetails[] = history.filter((e) => e.caseStatus === label);
+    setwachHistory(list)
+
+  };
   const sentFileUpload = async (file: any) => {
-    // if (!selectedFile) {
-    //   document.getElementById('csvFileInput')?.click();
-    //   return;
-    // }
+
     const formData = new FormData();
     formData.append("file", file);
     console.log(formData, 'formData')
@@ -251,8 +290,333 @@ const CaseDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, getDetails, o
           </svg>
 
           <div className="relative">
-            <p className="text-black text-xl font-medium">Case</p>
+            <p className="text-black text-xl font-medium">Case Details</p>
           </div>
+        </div>
+        <div className="w-full max-w-4xl mx-auto p-4">
+          {/* Progress Label & Percentage */}
+          <div className="flex justify-between mb-3">
+            <span className="text-lg font-semibold text-blue-700 dark:text-white">Progress</span>
+            <span className="text-sm font-medium text-blue-700 dark:text-white">{progressPercentage}%</span>
+          </div>
+
+          {/* Progress Bar */}
+          {/* <div className="relative w-full bg-gray-300 rounded-full h-4 dark:bg-gray-300">
+
+            <div
+              className={`h-4 transition-all ${progressPercentage !== 100 ? 'rounded-l-full' : 'rounded-full'} ${progressPercentage <= 25
+                ? 'bg-red-500'
+                : progressPercentage <= 50
+                  ? 'bg-blue-500'
+                  : progressPercentage <= 75
+                    ? 'bg-purple-500'
+                    : 'bg-green-500'
+                }`}
+              style={{ width: `${progressPercentage}%` }}
+            />
+
+
+            <div className="absolute inset-0 flex justify-between">
+              {phases.slice(1).map((_, index) => (
+                <div
+                  key={index}
+                  className="w-1 h-4 bg-gray-500 absolute"
+                  style={{ left: `${((index + 1) / phases.length) * 100}%` }}
+                />
+              ))}
+            </div>
+          </div> */}
+
+
+          {/* <div className="relative w-full bg-gray-300 rounded-full h-4 dark:bg-gray-200" style={{ overflow: "visible" }}>
+
+            <div
+              data-tooltip-id="open"
+              onMouseEnter={handleMouseEnter}
+              className="absolute left-0 top-0 h-4 z-10 rounded bg-red-500 transition-all"
+              style={{
+                width: `${Math.min(progressPercentage, 26)}%`,
+                borderRadius: progressPercentage < 100 ? "0 9999px 9999px 0" : "9999px",
+              }}
+            />
+
+            <Tooltip
+              id="open"
+              place="top"
+              style={{
+                backgroundColor: "rgba(0, 0, 0, 0.7)",
+                color: "white",
+                zIndex: 9999,
+              }}
+            >
+              <p className="font-semibold">Channels:</p>
+              <p>No channels available</p>
+            </Tooltip>
+            <div>
+
+            </div>
+            {progressPercentage > 25 && (progress === 2 || (progress >= 2)) && (
+              <div>
+                <div
+                  data-tooltip-id="assign"
+                  className="absolute left-[25%] top-0 h-4 z-10  bg-blue-500 transition-all"
+                  onMouseEnter={handleMouseEnter}
+                  style={{ width: `${Math.min(progressPercentage - 25, 25)}%` }}
+                />
+                <Tooltip
+                  id="assign"
+                  place="top"
+
+                  style={{ backgroundColor: "rgba(0, 0, 0, 0.7)", color: "white" }}
+                >
+                  <p className="font-semibold">Channels:</p>
+                  <p>No channels available</p>
+                </Tooltip>
+
+              </div>
+            )}
+            {progressPercentage > 50 && (progress === 3 || (progress >= 3)) && (
+              <div>
+                <div
+                  data-tooltip-id="in_progress"
+                  onMouseEnter={handleMouseEnter}
+                  className="absolute left-[50%] top-0 h-4 z-10 bg-purple-500 transition-all"
+                  style={{ width: `${Math.min(progressPercentage - 50, 25)}%` }}
+                />
+                <Tooltip
+                  id="in_progress"
+                  place="top"
+                  style={{ backgroundColor: "rgba(0, 0, 0, 0.7)", color: "white" }}
+                >
+                  <p className="font-semibold">Channels:</p>
+                  <p>No channels available</p>
+                </Tooltip>
+              </div>
+            )}
+            {progressPercentage > 75 && (progress === 4 || (progress >= 4)) && (
+              <div>
+                <div
+                  data-tooltip-id="completed"
+                  onMouseEnter={handleMouseEnter}
+                  className="absolute left-[75%]   z-10 top-0 h-4 bg-green-500 transition-all"
+                  style={{ width: `${Math.min(progressPercentage - 75, 25)}%`, borderRadius: progressPercentage === 100 ? "9999px" : "0" }}
+                />
+                <Tooltip
+                  id="completed"
+                  place="top"
+                  style={{ backgroundColor: "rgba(0, 0, 0, 0.7)", color: "white" }}
+                >
+                  <p className="font-semibold">Channels:</p>
+                  <p>No channels available</p>
+                </Tooltip>
+              </div>
+            )}
+
+            <div className="absolute inset-0 flex justify-between">
+              {phases.slice(1).map((_, index) => (
+                <div
+                  key={index}
+                  className="w-1 h-4 z-10 bg-gray-500 absolute"
+                  style={{ left: `${((index + 1) / phases.length) * 100}%` }}
+                />
+              ))}
+            </div>
+          </div> */}
+          <div className="relative w-full bg-gray-300 rounded-full h-4 dark:bg-gray-200">
+            {/* Red segment (First Segment) */}
+
+            <div
+              data-tooltip-id="open"
+              onMouseEnter={() => handleMouseEnter('NEW')}
+              className="absolute left-0 top-0 h-4 z-10 bg-purple-500 transition-all"
+              style={{
+                width: `${Math.min(progressPercentage, 26)}%`,
+                borderRadius:
+                  progressPercentage >= 100
+                    ? "9999px" // Fully rounded when complete
+                    : "9999px 0 0 9999px", // Rounded only on the left
+              }}
+            />
+            {wachHistory.length > 0 && (
+              <Tooltip
+                id="open"
+                place="top"
+                style={{
+                  backgroundColor: "rgba(0, 0, 0, 0.7)",
+                  color: "white",
+                  zIndex: 9999,
+                }}
+              >
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div className="font-semibold">Assigned Date:</div>
+                  <div>{new Date(wachHistory.length > 0 ? formatDate(wachHistory[0]?.assignedDate) : '').toLocaleString()}</div>
+
+                  <div className="font-semibold">Case Owner:</div>
+                  <div>{wachHistory.length > 0 ? wachHistory[0]?.caseOwner : ''}</div>
+
+                  <div className="font-semibold">Case Status:</div>
+                  <div className={`font-bold ${"text-purple-400"}`}>
+                    <div>{wachHistory.length > 0 ? wachHistory[0]?.caseStatus : ''}</div>
+                  </div>
+
+                  <div className="font-semibold">Updated At:</div>
+                  <div>{new Date(wachHistory.length > 0 ? formatDate(wachHistory[0]?.updatedAt) : '').toLocaleString()}</div>
+                </div>
+              </Tooltip>
+            )}
+
+            {/* Blue segment (Second Segment) */}
+            {progressPercentage > 25 && (progress === 2 || progress >= 2) && (
+              <div>
+                <div
+                  data-tooltip-id="assign"
+                  className="absolute left-[25%] top-0 h-4 z-10 bg-red-500 transition-all"
+                  onMouseEnter={() => handleMouseEnter('OPEN')}
+                  style={{
+                    width: `${Math.min(progressPercentage - 25, 25)}%`,
+                    borderRadius: "0", // Middle segment should be rectangular
+                  }}
+                />
+                {wachHistory.length > 0 && (
+                  <Tooltip
+                    id="assign"
+                    place="top"
+                    style={{
+                      backgroundColor: "rgba(0, 0, 0, 0.7)",
+                      color: "white",
+                      zIndex: 9999,
+                    }}
+                  >
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      <div className="font-semibold">Assigned Date:</div>
+                      <div>{new Date(wachHistory.length > 0 ? formatDate(wachHistory[0]?.assignedDate) : '').toLocaleString()}</div>
+
+                      <div className="font-semibold">Case Owner:</div>
+                      <div>{wachHistory.length > 0 ? wachHistory[0]?.caseOwner : ''}</div>
+
+                      <div className="font-semibold">Case Status:</div>
+                      <div className={`font-bold ${"text-red-400"}`}>
+                        <div>{wachHistory.length > 0 ? wachHistory[0]?.caseStatus : ''}</div>
+                      </div>
+
+                      <div className="font-semibold">Updated At:</div>
+                      <div>{new Date(wachHistory.length > 0 ? formatDate(wachHistory[0]?.updatedAt) : '').toLocaleString()}</div>
+                    </div>
+                  </Tooltip>
+                )}
+              </div>
+
+            )}
+
+            {/* Purple segment (Third Segment) */}
+            {progressPercentage > 50 && (progress === 3 || progress >= 3) && (
+              <div>
+                <div
+                  data-tooltip-id="in_progress"
+                  onMouseEnter={() => handleMouseEnter("IN PROGRESS")}
+                  className="absolute left-[50%] top-0 h-4 z-10 bg-orange-500 transition-all"
+                  style={{
+                    width: `${Math.min(progressPercentage - 50, 25)}%`,
+                    borderRadius: "0", // Middle segment should be rectangular
+                  }}
+                />
+                {wachHistory.length > 0 && (
+                  <Tooltip
+                    id="in_progress"
+                    place="top"
+                    style={{
+                      backgroundColor: "rgba(0, 0, 0, 0.7)",
+                      color: "white",
+                      zIndex: 9999,
+                    }}
+                  >
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      <div className="font-semibold">Assigned Date:</div>
+                      <div>{new Date(wachHistory.length > 0 ? formatDate(wachHistory[0]?.assignedDate) : '').toLocaleString()}</div>
+
+                      <div className="font-semibold">Case Owner:</div>
+                      <div>{wachHistory.length > 0 ? wachHistory[0]?.caseOwner : ''}</div>
+
+                      <div className="font-semibold">Case Status:</div>
+                      <div className={`font-bold ${"text-orange-400"}`}>
+                        <div>{wachHistory.length > 0 ? wachHistory[0]?.caseStatus : ''}</div>
+                      </div>
+
+                      <div className="font-semibold">Updated At:</div>
+                      <div>{new Date(wachHistory.length > 0 ? formatDate(wachHistory[0]?.updatedAt) : '').toLocaleString()}</div>
+                    </div>
+                  </Tooltip>
+                )}
+
+              </div>
+            )}
+
+            {/* Green segment (Last Segment) */}
+            {progressPercentage > 75 && (progress === 4 || progress >= 4) && (
+              <div>
+                <div
+                  data-tooltip-id="completed"
+                  onMouseEnter={() => handleMouseEnter("CLOSED")}
+                  className="absolute left-[75%] z-10 top-0 h-4 bg-green-500 transition-all"
+                  style={{
+                    width: `${Math.min(progressPercentage - 75, 25)}%`,
+                    borderRadius:
+                      progressPercentage === 100
+                        ? "9999px" // Fully rounded when complete
+                        : "0 9999px 9999px 0", // Rounded only on the right
+                  }}
+                />
+                {wachHistory.length > 0 && (
+                  <Tooltip
+                    id="completed"
+                    place="top"
+                    style={{
+                      backgroundColor: "rgba(0, 0, 0, 0.7)",
+                      color: "white",
+                      zIndex: 9999,
+                    }}
+                  >
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      <div className="font-semibold">Assigned Date:</div>
+                      <div>{new Date(wachHistory.length > 0 ? formatDate(wachHistory[0]?.assignedDate) : '').toLocaleString()}</div>
+
+                      <div className="font-semibold">Case Owner:</div>
+                      <div>{wachHistory.length > 0 ? wachHistory[0]?.caseOwner : ''}</div>
+
+                      <div className="font-semibold">Case Status:</div>
+                      <div className={`font-bold ${"text-green-400"}`}>
+                        <div>{wachHistory.length > 0 ? wachHistory[0]?.caseStatus : ''}</div>
+                      </div>
+
+                      <div className="font-semibold">Updated At:</div>
+                      <div>{new Date(wachHistory.length > 0 ? formatDate(wachHistory[0]?.updatedAt) : '').toLocaleString()}</div>
+                    </div>
+                  </Tooltip>
+                )}
+              </div>
+            )}
+            <div className="absolute inset-0 flex justify-between">
+              {phases.slice(1).map((_, index) => (
+                <div
+                  key={index}
+                  className="w-1 h-4 z-10 bg-gray-500 absolute"
+                  style={{ left: `${((index + 1) / phases.length) * 100}%` }}
+                />
+              ))}
+            </div>
+          </div>
+
+
+
+          <div className="flex justify-between mt-3 text-sm font-semibold text-gray-300 dark:text-black"
+          >
+            {phases.map((phase, index) => (
+              <span key={index} className='text-sm mb-1 font-light font-lexend' style={{ width: `${progressPercentage}%` }}>{phase}</span> // Always visible
+            ))}
+          </div>
+
+
+
         </div>
 
         <div className="mb-6 p-6">
