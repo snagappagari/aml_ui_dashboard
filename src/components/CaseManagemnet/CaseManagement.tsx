@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
+<<<<<<< HEAD
 import trans from '../../assets/images/Trans.svg';
+=======
+>>>>>>> b99809e7b0c158b76e025dcf81d55776248f6b4d
 import { PaginationState } from '../../commonUtils/Interface';
 import CaseService from '../../Services/CaseService';
 import TrasactionsService from '../../Services/TrasactionsService';
@@ -366,6 +369,7 @@ const CaseManagement: React.FC = () => {
 
                     </span>
                   </button> */}
+<<<<<<< HEAD
                                     <button
                                         className="relative border-2 border-gray-200 text-white bg-white flex items-center justify-center 
              transition-all duration-500 ease-out group w-[40px] h-[40px] rounded-full 
@@ -385,6 +389,9 @@ const CaseManagement: React.FC = () => {
                                             </span>
                                         </span>
                                     </button>
+=======
+
+>>>>>>> b99809e7b0c158b76e025dcf81d55776248f6b4d
 
 
 
