@@ -12,12 +12,14 @@ axios.interceptors.request.use((req) => {
   headers["Content-Type"] = "application/json";
   req.headers = headers;
   if (token) {
-    if (!req.url?.includes('fup')){
-    req.headers.Authorization = "Bearer" + " " + token;
-  }}
+    if (!req.url?.includes('fup')) {
+      req.headers.Authorization = "Bearer" + " " + token;
+    }
+  }
   console.log("Request to server:::::::::::::::::::");
   return req;
 });
+
 
 // Response interceptor
 axios.interceptors.response.use(
@@ -31,7 +33,7 @@ axios.interceptors.response.use(
     ) {
       document.body.classList.remove("loading-indicator");
       if (res.data == null) {
-       
+
       }
       return res;
     } else {

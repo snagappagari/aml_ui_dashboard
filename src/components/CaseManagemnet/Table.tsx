@@ -226,26 +226,33 @@ const Table = ({
                                 {e[h.columnValue]}
                               </span>
                             ) :
-                              e[h.columnValue] === "COMPLETED" ? (
+                              e[h.columnValue] === "CLOSED" ? (
                                 // <span className="bg-green-400 text-black px-2 text-sm py-1 rounded-full">
                                 <span className="text-green-600 px-2 text-sm py-1">
                                   {e[h.columnValue]}
                                 </span>
-                              ) : e[h.columnValue] === "PENDING" ? (
+                              ) : e[h.columnValue] === "NEW" ? (
                                 // <span className="bg-green-400 text-black px-2 text-sm py-1 rounded-full">
                                 <span className="text-purple-600 px-2 text-sm py-1">
                                   {e[h.columnValue]}
                                 </span>
-                              ) : e[h.columnValue] === "CANCELLED" ? (
+
+                              ) : e[h.columnValue] === "IN PROGRESS" ? (
                                 // <span className="bg-green-400 text-black px-2 text-sm py-1 rounded-full">
-                                <span className="text-red-600 px-2 text-sm py-1">
-                                  {e[h.columnValue]}
-                                </span>
-                              ) : (
-                                <span className="text-black">
+                                <span className="text-orange-600 px-2 text-sm py-1">
                                   {e[h.columnValue]}
                                 </span>
                               )
+                                : e[h.columnValue] === "CANCELLED" ? (
+                                  // <span className="bg-green-400 text-black px-2 text-sm py-1 rounded-full">
+                                  <span className="text-red-600 px-2 text-sm py-1">
+                                    {e[h.columnValue]}
+                                  </span>
+                                ) : (
+                                  <span className="text-black">
+                                    {e[h.columnValue]}
+                                  </span>
+                                )
                           ) : h.columnValue === "caseId" ? (
                             (
                               // <span className="bg-green-400 text-black px-2 text-sm py-1 rounded-full">

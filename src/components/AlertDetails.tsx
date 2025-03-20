@@ -15,11 +15,11 @@ const AlertDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBackToTabl
   const [isCommentEnabled, setIsCommentEnabled] = useState(false);
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState<Array<{ text: string, date: string }>>([]);
-  
+
   // State for file upload
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
+
   // State for tooltip
   const [showTooltip, setShowTooltip] = useState(false);
   const [hasBeenPromoted, setHasBeenPromoted] = useState(false);
@@ -116,7 +116,7 @@ const AlertDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBackToTabl
   // Function to handle promote to case submission using axios instead of fetch
   const handlePromoteToCase = (data: PromoteToCaseData) => {
     setIsProcessing(true);
-    
+
     axios.post('http://10.80.3.53:31117/api/v1/cases', data)
       .then(response => {
         console.log('Success:', response.data);
@@ -165,7 +165,7 @@ const AlertDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBackToTabl
               onClick={openPromoteModal}
               disabled={isProcessing || hasBeenPromoted}
             >
-              {isProcessing ? 'Processing...' : hasBeenPromoted ? 'Promoted to Case' : 'Escalate to case'}
+              {isProcessing ? 'Processing...' : hasBeenPromoted ? 'Promoted to Case' : 'Create case'}
             </button>
           </div>
         </div>
@@ -339,9 +339,9 @@ const AlertDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBackToTabl
         alert={selectedAlert}
         onPromote={handlePromoteToCase}
       />
-            <SuccessModal 
-        isOpen={showSuccessModal} 
-        onClose={closeSuccessModal} 
+      <SuccessModal
+        isOpen={showSuccessModal}
+        onClose={closeSuccessModal}
       />
     </div>
   );

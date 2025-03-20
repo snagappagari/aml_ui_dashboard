@@ -18,8 +18,16 @@ const Navbar: React.FC = () => {
   useEffect(() => {
     setActiveId(location?.pathname)
   }, [location])
+  useEffect(() => {
+    if (location?.pathname === activeId) {
+      document.body.classList.remove("loading-indicator");
+    }
+
+  }, [activeId])
+
 
   const handleNavigation = (id: string, path: string) => {
+    document.body.classList.add("loading-indicator");
     setActiveId(id);
     navigate(path);
   };

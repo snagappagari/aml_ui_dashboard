@@ -369,7 +369,6 @@ const CaseManagement: React.FC = () => {
 
 
 
-
                                     {/* <button
                     className="relative bg-[#0a8fff] text-white px-6 py-2 rounded-md flex items-center justify-center transition-all duration-300 ease-in-out hover:px-10 group"
                     onClick={() => setIsTraction(true)}
