@@ -296,132 +296,10 @@ const CaseDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, getDetails, o
         <div className="w-full max-w-4xl mx-auto p-4">
           {/* Progress Label & Percentage */}
           <div className="flex justify-between mb-3">
-            <span className="text-lg font-semibold text-blue-700 dark:text-white">Progress</span>
-            <span className="text-sm font-medium text-blue-700 dark:text-white">{progressPercentage}%</span>
+            <span className="text-lg font-semibold text-blue-700 dark:text-blue">Progress</span>
+            <span className="text-sm font-medium text-blue-700 dark:text-blue">{selectedAlert?.status}</span>
           </div>
 
-          {/* Progress Bar */}
-          {/* <div className="relative w-full bg-gray-300 rounded-full h-4 dark:bg-gray-300">
-
-            <div
-              className={`h-4 transition-all ${progressPercentage !== 100 ? 'rounded-l-full' : 'rounded-full'} ${progressPercentage <= 25
-                ? 'bg-red-500'
-                : progressPercentage <= 50
-                  ? 'bg-blue-500'
-                  : progressPercentage <= 75
-                    ? 'bg-purple-500'
-                    : 'bg-green-500'
-                }`}
-              style={{ width: `${progressPercentage}%` }}
-            />
-
-
-            <div className="absolute inset-0 flex justify-between">
-              {phases.slice(1).map((_, index) => (
-                <div
-                  key={index}
-                  className="w-1 h-4 bg-gray-500 absolute"
-                  style={{ left: `${((index + 1) / phases.length) * 100}%` }}
-                />
-              ))}
-            </div>
-          </div> */}
-
-
-          {/* <div className="relative w-full bg-gray-300 rounded-full h-4 dark:bg-gray-200" style={{ overflow: "visible" }}>
-
-            <div
-              data-tooltip-id="open"
-              onMouseEnter={handleMouseEnter}
-              className="absolute left-0 top-0 h-4 z-10 rounded bg-red-500 transition-all"
-              style={{
-                width: `${Math.min(progressPercentage, 26)}%`,
-                borderRadius: progressPercentage < 100 ? "0 9999px 9999px 0" : "9999px",
-              }}
-            />
-
-            <Tooltip
-              id="open"
-              place="top"
-              style={{
-                backgroundColor: "rgba(0, 0, 0, 0.7)",
-                color: "white",
-                zIndex: 9999,
-              }}
-            >
-              <p className="font-semibold">Channels:</p>
-              <p>No channels available</p>
-            </Tooltip>
-            <div>
-
-            </div>
-            {progressPercentage > 25 && (progress === 2 || (progress >= 2)) && (
-              <div>
-                <div
-                  data-tooltip-id="assign"
-                  className="absolute left-[25%] top-0 h-4 z-10  bg-blue-500 transition-all"
-                  onMouseEnter={handleMouseEnter}
-                  style={{ width: `${Math.min(progressPercentage - 25, 25)}%` }}
-                />
-                <Tooltip
-                  id="assign"
-                  place="top"
-
-                  style={{ backgroundColor: "rgba(0, 0, 0, 0.7)", color: "white" }}
-                >
-                  <p className="font-semibold">Channels:</p>
-                  <p>No channels available</p>
-                </Tooltip>
-
-              </div>
-            )}
-            {progressPercentage > 50 && (progress === 3 || (progress >= 3)) && (
-              <div>
-                <div
-                  data-tooltip-id="in_progress"
-                  onMouseEnter={handleMouseEnter}
-                  className="absolute left-[50%] top-0 h-4 z-10 bg-purple-500 transition-all"
-                  style={{ width: `${Math.min(progressPercentage - 50, 25)}%` }}
-                />
-                <Tooltip
-                  id="in_progress"
-                  place="top"
-                  style={{ backgroundColor: "rgba(0, 0, 0, 0.7)", color: "white" }}
-                >
-                  <p className="font-semibold">Channels:</p>
-                  <p>No channels available</p>
-                </Tooltip>
-              </div>
-            )}
-            {progressPercentage > 75 && (progress === 4 || (progress >= 4)) && (
-              <div>
-                <div
-                  data-tooltip-id="completed"
-                  onMouseEnter={handleMouseEnter}
-                  className="absolute left-[75%]   z-10 top-0 h-4 bg-green-500 transition-all"
-                  style={{ width: `${Math.min(progressPercentage - 75, 25)}%`, borderRadius: progressPercentage === 100 ? "9999px" : "0" }}
-                />
-                <Tooltip
-                  id="completed"
-                  place="top"
-                  style={{ backgroundColor: "rgba(0, 0, 0, 0.7)", color: "white" }}
-                >
-                  <p className="font-semibold">Channels:</p>
-                  <p>No channels available</p>
-                </Tooltip>
-              </div>
-            )}
-
-            <div className="absolute inset-0 flex justify-between">
-              {phases.slice(1).map((_, index) => (
-                <div
-                  key={index}
-                  className="w-1 h-4 z-10 bg-gray-500 absolute"
-                  style={{ left: `${((index + 1) / phases.length) * 100}%` }}
-                />
-              ))}
-            </div>
-          </div> */}
           <div className="relative w-full bg-gray-300 rounded-full h-4 dark:bg-gray-200">
             {/* Red segment (First Segment) */}
 
@@ -449,7 +327,7 @@ const CaseDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, getDetails, o
               >
                 <div className="grid grid-cols-2 gap-2 text-xs">
                   <div className="font-semibold">Assigned Date:</div>
-                  <div>{new Date(wachHistory.length > 0 ? formatDate(wachHistory[0]?.assignedDate) : '').toLocaleString()}</div>
+                  <div>{(wachHistory.length > 0 ? formatDate(wachHistory[0]?.assignedDate) : '')}</div>
 
                   <div className="font-semibold">Case Owner:</div>
                   <div>{wachHistory.length > 0 ? wachHistory[0]?.caseOwner : ''}</div>
@@ -460,7 +338,7 @@ const CaseDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, getDetails, o
                   </div>
 
                   <div className="font-semibold">Updated At:</div>
-                  <div>{new Date(wachHistory.length > 0 ? formatDate(wachHistory[0]?.updatedAt) : '').toLocaleString()}</div>
+                  <div>{(wachHistory.length > 0 ? formatDate(wachHistory[0]?.updatedAt) : '')}</div>
                 </div>
               </Tooltip>
             )}
@@ -489,7 +367,7 @@ const CaseDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, getDetails, o
                   >
                     <div className="grid grid-cols-2 gap-2 text-xs">
                       <div className="font-semibold">Assigned Date:</div>
-                      <div>{new Date(wachHistory.length > 0 ? formatDate(wachHistory[0]?.assignedDate) : '').toLocaleString()}</div>
+                      <div>{(wachHistory.length > 0 ? formatDate(wachHistory[0]?.assignedDate) : '')}</div>
 
                       <div className="font-semibold">Case Owner:</div>
                       <div>{wachHistory.length > 0 ? wachHistory[0]?.caseOwner : ''}</div>
@@ -500,7 +378,7 @@ const CaseDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, getDetails, o
                       </div>
 
                       <div className="font-semibold">Updated At:</div>
-                      <div>{new Date(wachHistory.length > 0 ? formatDate(wachHistory[0]?.updatedAt) : '').toLocaleString()}</div>
+                      <div>{(wachHistory.length > 0 ? formatDate(wachHistory[0]?.updatedAt) : '')}</div>
                     </div>
                   </Tooltip>
                 )}
@@ -532,7 +410,7 @@ const CaseDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, getDetails, o
                   >
                     <div className="grid grid-cols-2 gap-2 text-xs">
                       <div className="font-semibold">Assigned Date:</div>
-                      <div>{new Date(wachHistory.length > 0 ? formatDate(wachHistory[0]?.assignedDate) : '').toLocaleString()}</div>
+                      <div>{(wachHistory.length > 0 ? formatDate(wachHistory[0]?.assignedDate) : '')}</div>
 
                       <div className="font-semibold">Case Owner:</div>
                       <div>{wachHistory.length > 0 ? wachHistory[0]?.caseOwner : ''}</div>
@@ -543,7 +421,7 @@ const CaseDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, getDetails, o
                       </div>
 
                       <div className="font-semibold">Updated At:</div>
-                      <div>{new Date(wachHistory.length > 0 ? formatDate(wachHistory[0]?.updatedAt) : '').toLocaleString()}</div>
+                      <div>{(wachHistory.length > 0 ? formatDate(wachHistory[0]?.updatedAt) : '')}</div>
                     </div>
                   </Tooltip>
                 )}
@@ -578,7 +456,7 @@ const CaseDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, getDetails, o
                   >
                     <div className="grid grid-cols-2 gap-2 text-xs">
                       <div className="font-semibold">Assigned Date:</div>
-                      <div>{new Date(wachHistory.length > 0 ? formatDate(wachHistory[0]?.assignedDate) : '').toLocaleString()}</div>
+                      <div>{(wachHistory.length > 0 ? formatDate(wachHistory[0]?.assignedDate) : '')}</div>
 
                       <div className="font-semibold">Case Owner:</div>
                       <div>{wachHistory.length > 0 ? wachHistory[0]?.caseOwner : ''}</div>
@@ -589,7 +467,7 @@ const CaseDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, getDetails, o
                       </div>
 
                       <div className="font-semibold">Updated At:</div>
-                      <div>{new Date(wachHistory.length > 0 ? formatDate(wachHistory[0]?.updatedAt) : '').toLocaleString()}</div>
+                      <div>{(wachHistory.length > 0 ? formatDate(wachHistory[0]?.updatedAt) : '')}</div>
                     </div>
                   </Tooltip>
                 )}
@@ -611,7 +489,7 @@ const CaseDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, getDetails, o
           <div className="flex justify-between mt-3 text-sm font-semibold text-gray-300 dark:text-black"
           >
             {phases.map((phase, index) => (
-              <span key={index} className='text-sm mb-1 font-light font-lexend' style={{ width: `${progressPercentage}%` }}>{phase}</span> // Always visible
+              <span key={index} className='text-sm text-black mb-1  font-lexend' style={{ width: `${progressPercentage}%` }}>{phase}</span> // Always visible
             ))}
           </div>
 
