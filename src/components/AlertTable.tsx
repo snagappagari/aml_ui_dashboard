@@ -87,6 +87,7 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick, setAlertData }) =
   const mapToAlertFormat = (apiAlert: ApiAlert): Alert => {
     return {
       id: apiAlert.alertId,
+      city:apiAlert.city,
       description: apiAlert.alertType,
       date: formatDate(apiAlert.createdAt),
       rule: apiAlert.ruleId,
@@ -197,12 +198,12 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick, setAlertData }) =
       </div> */}
 
       <div className="flex items-center gap-6 mb-4">
-        <p className="text-black font-regular">Recent Alerts</p>
+        <p className="font-regular">Recent Alerts</p>
 
         <div className="relative">
           <input
             type="text"
-            className="w-[320px] h-[36px] rounded-[12px] px-[14px] pr-[40px] py-[8px] bg-gray-100 text-black text-sm font-lexendDecaLight"
+            className="w-[320px] h-[30px] rounded-full px-[14px] pr-[40px] py-[8px] bg-gray-100 text-black text-sm font-lexendDecaLight"
             placeholder="Search"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -210,7 +211,7 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick, setAlertData }) =
           />
 
           <svg
-            className="absolute top-1/2 right-[12px] transform -translate-y-1/2 h-5 w-5 text-slate-500"
+            className="absolute top-1/2 right-[12px] transform -translate-y-1/2 h-4 w-4 text-slate-500"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -236,11 +237,11 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick, setAlertData }) =
             <table className="min-w-full bg-white">
               <thead className="bg-gray-100">
                 <tr>
-                  <th className="py-3 px-4 text-left text-sm font-medium">Alert ID</th>
-                  <th className="py-3 px-4 text-left text-sm font-medium">Type</th>
-                  <th className="py-3 px-4 text-left text-sm font-medium">Priority</th>
-                  <th className="py-3 px-4 text-left text-sm font-medium">Location</th>
-                  <th className="py-3 px-4 text-left text-sm font-medium">Date</th>
+                  <th className="py-3 px-4 text-left text-xs font-medium">Alert ID</th>
+                  <th className="py-3 px-4 text-left text-xs font-medium">Type</th>
+                  <th className="py-3 px-4 text-left text-xs font-medium">Priority</th>
+                  <th className="py-3 px-4 text-left text-xs font-medium">Location</th>
+                  <th className="py-3 px-4 text-left text-xs font-medium">Date</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -251,9 +252,9 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick, setAlertData }) =
                       className={`bg-white cursor-pointer hover:bg-gray-100`}
                       onClick={() => handleRowClick(alert)}
                     >
-                      <td className="py-3 px-4 text-sm font-lexendDecaLight text-blue-600 cursor-pointer">{alert.alertId}</td>
-                      <td className="py-3 px-4 text-sm font-lexendDecaLight text-gray-700">{alert.alertType}</td>
-                      {/* <td className="py-3 px-4 text-sm text-gray-700">
+                      <td className="py-3 px-4 text-xs font-lexendDecaLight text-blue-600 cursor-pointer">{alert.alertId}</td>
+                      <td className="py-3 px-4 text-xs font-lexendDecaLight text-gray-700">{alert.alertType}</td>
+                      {/* <td className="py-3 px-4 text-xs text-gray-700">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                           alert.status === 'CLOSED' ? 'bg-green-100 text-green-800' :
                           alert.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
@@ -262,7 +263,7 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick, setAlertData }) =
                           {alert.status}
                         </span>
                       </td> */}
-                      <td className={`py-3 px-4 text-sm font-lexendDecaLight ${alert.priority?.toLowerCase() === "medium" ? "text-orange-400" :
+                      <td className={`py-3 px-4 text-xs font-lexendDecaLight ${alert.priority?.toLowerCase() === "medium" ? "text-orange-400" :
                         alert.priority?.toLowerCase() === "low" ? "text-green-500" :
                           alert.priority?.toLowerCase() === "high" ? "text-red-600" :
                             alert.priority?.toLowerCase() === "critical" ? "text-purple-500" :
@@ -273,8 +274,8 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick, setAlertData }) =
                           : ""}
                       </td>
 
-                      <td className="py-3 px-4 text-sm font-lexendDecaLight text-gray-700">{`${alert.city || ''}, ${alert.country || ''}`}</td>
-                      <td className="py-3 px-4 text-sm font-lexendDecaLight text-gray-700">{formatDate(alert.createdAt)}</td>
+                      <td className="py-3 px-4 text-xs font-lexendDecaLight text-gray-700">{`${alert.city || ''}, ${alert.country || ''}`}</td>
+                      <td className="py-3 px-4 text-xs font-lexendDecaLight text-gray-700">{formatDate(alert.createdAt)}</td>
                       {/* <td className="py-2 px-2 text-center">
                         <button 
                           className="w-6 h-6"

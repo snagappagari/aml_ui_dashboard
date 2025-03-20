@@ -194,7 +194,7 @@ const Reports: React.FC = () => {
         {reportConfigs.map(config => (
           <div key={config.id} className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
             <div className="flex justify-between items-center mb-3">
-              <h2 className="text-lg font-medium text-blue-800">{config.title}</h2>
+              <h2 className="text-lg font-medium text-blue-600">{config.title}</h2>
               <button 
                 className="text-blue-500 hover:text-blue-600 focus:outline-none" 
                 onClick={() => handleDownloadClick(config.id)}
@@ -206,7 +206,6 @@ const Reports: React.FC = () => {
                 </svg>
               </button>
             </div>
-            <p className="text-sm mb-4">{config.description}</p>
             
             {/* Using the isLoading state to show loading indicator */}
             {isLoading[config.id] ? (
@@ -229,7 +228,7 @@ const Reports: React.FC = () => {
               </p>
             ) : (
               <p className="text-sm mb-4">
-                {`${config.description.split(' ').slice(0, 20).join(' ')}...`}
+                {`${config.description.split(' ').slice(0, 50).join(' ')}...`}
               </p>
             )}
 

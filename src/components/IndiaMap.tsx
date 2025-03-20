@@ -21,12 +21,12 @@ const getPriorityColor = (priority: string) => {
   }
 };
 
-const priorityOptions = ["All Priorities", "Critical", "High", "Medium", "Low"];
+const priorityOptions = ["All", "Critical", "High", "Medium", "Low"];
 
 const IndiaMap: React.FC = () => {
   const [alertData, setAlertData] = useState<AlertLocation[]>([]);
   const [filteredAlertData, setFilteredAlertData] = useState<AlertLocation[]>([]);
-  const [selectedPriority, setSelectedPriority] = useState<string>("All Priorities");
+  const [selectedPriority, setSelectedPriority] = useState<string>("All");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -50,7 +50,7 @@ const IndiaMap: React.FC = () => {
 
   // Filter data when priority selection changes
   useEffect(() => {
-    if (selectedPriority === "All Priorities") {
+    if (selectedPriority === "All") {
       setFilteredAlertData(alertData);
     } else {
       const filtered = alertData.filter(
@@ -65,13 +65,13 @@ const IndiaMap: React.FC = () => {
     return L.divIcon({
       className: 'custom-marker-icon',
       html: `
-        <div class="relative w-6 h-6">
-          <div class="${getPriorityColor(priority)} w-full h-full rounded-full opacity-75 animate-ping absolute"></div>
-          <div class="${getPriorityColor(priority)} w-6 h-6 rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-2 border-white shadow-lg"></div>
+        <div class="relative w-4 h-4">
+          <div class="${getPriorityColor(priority)} w-4 h-4 rounded-full opacity-75 animate-ping absolute"></div>
+          <div class="${getPriorityColor(priority)} w-4 h-4 rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-2 border-white shadow-lg"></div>
         </div>
       `,
-      iconSize: [16, 16],
-      iconAnchor: [12, 12],
+      iconSize: [12, 12],
+      iconAnchor: [10, 10],
     });
   };
 
@@ -114,15 +114,15 @@ const IndiaMap: React.FC = () => {
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-2">
-        <h2 className="font-regular text-gray-800">Alerts Map</h2>
+        <p className="font-regular">Alerts Map</p>
         <select
           id="priorityFilter"
           value={selectedPriority}
           onChange={handlePriorityChange}
-          className="border border-gray-300 rounded-md px-1 py-1 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="border border-gray-300 rounded-md text-sm px-1 py-1 bg-white shadow-sm focus:outline-none"
         >
           {priorityOptions.map((priority) => (
-            <option key={priority} value={priority}>
+            <option key={priority} value={priority} className="text-xs">
               {priority}
             </option>
           ))}

@@ -13,11 +13,11 @@ const AlertSummary: React.FC = () => {
     },
   });
   const alertCategories = [
-    { id: 'total', label: 'TOTAL', count: dataSummary.totalCount, colorClass: 'text-blue-500' },
-    { id: 'completed', label: 'COMPLETED', count: dataSummary.status.COMPLETED, colorClass: 'text-green-500' },
-    { id: 'failed', label: 'FAILED', count: dataSummary.status.FAILED, colorClass: 'text-red-500' },
-    { id: 'low', label: 'CANCELLED', count: dataSummary.status.CANCELLED, colorClass: 'text-red-500' },
-    { id: 'critical', label: 'PENDING', count: dataSummary.status.PENDING, colorClass: 'text-purple-500' }
+    { id: 'total', label: 'Total', count: dataSummary.totalCount, colorClass: 'text-blue-500' },
+    { id: 'completed', label: 'Completed', count: dataSummary.status.COMPLETED, colorClass: 'text-green-500' },
+    { id: 'failed', label: 'Failed', count: dataSummary.status.FAILED, colorClass: 'text-red-500' },
+    { id: 'low', label: 'Cancelled', count: dataSummary.status.CANCELLED, colorClass: 'text-red-500' },
+    { id: 'critical', label: 'Pending', count: dataSummary.status.PENDING, colorClass: 'text-purple-500' }
   ];
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const AlertSummary: React.FC = () => {
           className="bg-white rounded-md border p-3 flex flex-col items-right w-[180px] h-[70px]"
         >
           <div className="text-sm font-medium text-gray-600">{category.label}</div>
-          <div className={`text-lg font-semibold ${category.colorClass}`}>
+          <div className={`text-lg ${category.colorClass}`}>
             {category.count}
           </div>
         </div>

@@ -173,28 +173,28 @@ const AlertDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBackToTabl
         <div className="mb-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
-              <h4 className="text-sm mb-1">Alert ID</h4>
+              <h4 className="text-sm mb-1 font-lexendDecaLight">Alert ID</h4>
               <p className="text-sm">{selectedAlert.id}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1">Alert Date</h4>
+              <h4 className="text-sm mb-1 font-lexendDecaLight">Alert Date</h4>
               <p className="text-sm">{selectedAlert.date}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1">Alert Status</h4>
+              <h4 className="text-sm mb-1 font-lexendDecaLight">Alert Status</h4>
               <p className="text-sm">{selectedAlert.alertStatus}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1">Alert Type</h4>
+              <h4 className="text-sm mb-1 font-lexendDecaLight">Alert Type</h4>
               <p className="text-sm">{selectedAlert.description}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1">Rule ID</h4>
+              <h4 className="text-sm mb-1 font-lexendDecaLight">Rule ID</h4>
               <p className="text-sm">{selectedAlert.rule}</p>
             </div>
             <div className="flex flex-col gap-1 relative">
               <div className="flex items-center gap-1">
-                <h4 className="text-sm mb-1">Transaction ID</h4>
+                <h4 className="text-sm mb-1 font-lexendDecaLight">Transaction ID</h4>
 
                 <div className="relative">
                   <svg
@@ -224,27 +224,27 @@ const AlertDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBackToTabl
               <p className="text-sm font-normal font-lexend">{selectedAlert.transactionId}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1">Transaction Type</h4>
+              <h4 className="text-sm mb-1 font-lexendDecaLight">Transaction Type</h4>
               <p className="text-sm">{selectedAlert.transactionType}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1">Network</h4>
+              <h4 className="text-sm mb-1 font-lexendDecaLight">Network</h4>
               <p className="text-sm">{selectedAlert.network}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1">Country</h4>
+              <h4 className="text-sm mb-1 font-lexendDecaLight">Country</h4>
               <p className="text-sm">{selectedAlert.country}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1">Alert Owner</h4>
+              <h4 className="text-sm mb-1 font-lexendDecaLight">Alert Owner</h4>
               <p className="text-sm">{selectedAlert.owner}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1">Last Updated</h4>
+              <h4 className="text-sm mb-1 font-lexendDecaLight">Last Updated</h4>
               <p className="text-sm">{selectedAlert.date}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1">Uploaded File</h4>
+              <h4 className="text-sm mb-1 font-lexendDecaLight">Uploaded File</h4>
               {selectedAlert.downloadFile ? (
                 <p className="text-sm text-blue-600 cursor-pointer">{selectedAlert.downloadFile}</p>
               ) : (
@@ -252,18 +252,18 @@ const AlertDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBackToTabl
               )}
             </div>
             <div>
-              <h4 className="text-sm mb-1">Rule Version</h4>
+              <h4 className="text-sm mb-1 font-lexendDecaLight">Rule Version</h4>
               <p className="text-sm">{selectedAlert.ruleVersion}</p>
             </div>
             <div>
-              <h4 className="text-sm mb-1">Case ID</h4>
+              <h4 className="text-sm mb-1 font-lexendDecaLight">Case ID</h4>
               <p className="text-sm">{selectedAlert.caseID}</p>
             </div>
           </div>
         </div>
 
         <div className="mb-6">
-          <h3 className="text-lg font-semibold mb-4">Comments</h3>
+          <h3 className="text-lg mb-4">Comments</h3>
           <div className="mb-4 bg-gray-50 p-4 rounded-md border border-gray-200 min-h-24">
             {comments.length > 0 && (
               <div className="space-y-3 mb-4">
@@ -299,7 +299,7 @@ const AlertDetails: React.FC<AlertDetailsProps> = ({ selectedAlert, onBackToTabl
         </div>
 
         <div>
-          <h3 className="text-lg font-semibold mb-4">Attachments</h3>
+          <h3 className="text-lg mb-4">Attachments</h3>
 
           <div
             className="border-2 border-dashed border-gray-300 rounded-md p-10 text-center cursor-pointer"

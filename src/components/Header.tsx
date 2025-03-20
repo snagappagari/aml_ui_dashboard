@@ -60,7 +60,7 @@ const Header: React.FC<HeaderProps> = ({ }) => {
               <img src={Avt} alt={user.firstName} className="w-full h-full object-cover" />
             </div>
             <div className="hidden md:flex flex-col">
-              <span className="text-sm font-medium">{user.firstName}</span>
+              <span className="text-sm font-medium text-left">{user.firstName}</span>
               <span className="text-xs text-gray-500">{formatDate(user.lastLogin)}</span>
             </div>
           </button>

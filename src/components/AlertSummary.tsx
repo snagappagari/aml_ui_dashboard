@@ -61,11 +61,11 @@ const AlertSummary: React.FC = () => {
   }
 
   return (
-    <div className="flex items-center gap-x-2">
+    <div className="flex items-left gap-x-2">
       {alertCategories.map((category) => (
-        <div key={category.id} className="bg-white rounded-md shadow p-3 flex flex-col items-center w-20">
+        <div key={category.id} className="border border-[#E8E8E8] bg-white rounded-md p-3 flex flex-col items-left w-28">
           <div className="text-xs text-gray-600">{category.label}</div>
-          <div className={`text-lg font-semibold ${category.colorClass}`}>
+          <div className={`text-lg ${category.colorClass}`}>
             {category.count}
           </div>
         </div>

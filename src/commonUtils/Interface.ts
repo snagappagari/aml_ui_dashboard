@@ -2,6 +2,7 @@
 
 export interface Alert {
   id: string;
+  city:string;
   description: string;
   date: string;
   rule: number;

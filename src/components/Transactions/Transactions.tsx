@@ -325,12 +325,12 @@ const Transactions: React.FC = () => {
                 </div>
               </div> */}
                 <div className="flex items-center gap-6">
-                  <p className="text-black text-xl font-medium">List of Transactions</p>
+                  <p className="font-regular">List of Transactions</p>
 
                   <div className="relative">
                     <input
                       type="text"
-                      className="w-[320px] h-[36px] rounded-[12px] px-[14px] pr-[40px] py-[8px] bg-gray-100 text-black text-xs font-lexendDecaLight"
+                      className="w-[320px] h-[30px] rounded-full px-[14px] pr-[40px] py-[8px] bg-gray-100 text-black text-sm font-lexendDecaLight"
                       placeholder="Search"
                       value={filterValue}
                       onChange={(e) => setFilterValue(e.target.value)}
@@ -342,7 +342,7 @@ const Transactions: React.FC = () => {
                     />
 
                     <svg
-                      className="absolute top-1/2 right-[12px] transform -translate-y-1/2 h-5 w-5 text-slate-500"
+                      className="absolute top-1/2 right-[12px] transform -translate-y-1/2 h-4 w-4 text-slate-500"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"

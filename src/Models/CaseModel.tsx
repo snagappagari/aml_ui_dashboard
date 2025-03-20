@@ -29,13 +29,49 @@ const PromoteToCaseModal: React.FC<PromoteToCaseModalProps> = ({ isOpen, onClose
   const [caseDescription, setCaseDescription] = useState('');
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [caseOwner, setCaseOwner] = useState('');
+  const [errors, setErrors] = useState({
+    caseOwner: false,
+    caseSeverity: false
+  });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCaseOwner(e.target.value);
+    const value = e.target.value;
+    setCaseOwner(value);
+    
+    // Clear the error for this field if there's a value
+    if (value.trim()) {
+      setErrors(prev => ({ ...prev, caseOwner: false }));
+    }
   };
+
+  const handleCaseSeverityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setCaseSeverity(value);
+    
+    // Clear the error if a value is selected
+    if (value) {
+      setErrors(prev => ({ ...prev, caseSeverity: false }));
+    }
+  };
+
   if (!isOpen || !alert) return null;
 
   const handlePromote = () => {
+    // Validate all required fields
+    const newErrors = {
+      caseOwner: !caseOwner.trim(),
+      caseSeverity: !caseSeverity
+    };
+    
+    // If any validation errors exist, update the state and stop
+    if (newErrors.caseOwner || newErrors.caseSeverity) {
+      setErrors(newErrors);
+      return;
+    }
+    
+    // Clear any previous errors
+    setErrors({ caseOwner: false, caseSeverity: false });
+
     const data: PromoteToCaseData = {
       description: caseDescription || '',
       transactionId: alert.transactionId || '',
@@ -44,21 +80,31 @@ const PromoteToCaseModal: React.FC<PromoteToCaseModalProps> = ({ isOpen, onClose
       status: alert.alertStatus || '', // Set a valid status value or adjust dynamically
       alertSent: false,
       caseOwner: caseOwner,
-      priority: caseSeverity as 'LOW' | 'MEDIUM' | 'HIGH' || 'CRITICAL', // Ensure this matches the allowed priority types
+      priority: caseSeverity, // Ensure this matches the allowed priority types
       network: alert.network || '',
-      city: '',
+      city: alert.city || '',
       country: alert.country || '',
       region: alert.region || '',
     };
   
     onPromote(data);
-    onClose();
     setShowSuccessModal(true);
   };
   
-  
   const handleSuccessModalClose = () => {
     setShowSuccessModal(false);
+    handleClose();
+  };
+
+  // Update your onClose handler to clear all form fields
+  const handleClose = () => {
+    // Reset all form fields
+    setCaseOwner('');
+    setCaseSeverity('');
+    setCaseDescription('');
+    // Reset any errors
+    setErrors({caseOwner: false, caseSeverity: false});
+    // Call the parent onClose
     onClose();
   };
 
@@ -67,8 +113,8 @@ const PromoteToCaseModal: React.FC<PromoteToCaseModalProps> = ({ isOpen, onClose
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div className="bg-white rounded-lg shadow-lg w-full max-w-3xl p-4">
           <div className="flex justify-between items-center border-b">
-            <h2 className="text-xl">Promote to Case</h2>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+            <h3 className="text-[16px]">Promote to Case</h3>
+            <button onClick={handleClose} className="text-gray-400 hover:text-gray-600">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -77,62 +123,62 @@ const PromoteToCaseModal: React.FC<PromoteToCaseModalProps> = ({ isOpen, onClose
           </div>
           
           <div className="py-2">
-            <div className="grid grid-cols-3 gap-4 mb-4">
+            <div className="grid grid-cols-3 gap-2 mb-0.5">
               <div>
-                <label className="text-sm mb-0.5">Alert ID</label>
+                <label className="text-sm mb-0.5 font-lexendDecaLight">Alert ID</label>
                 <div className="text-sm">{alert.id}</div>
               </div>
               <div>
-                <label className="text-sm mb-0.5">Alert Date</label>
+                <label className="text-sm mb-0.5 font-lexendDecaLight">Alert Date</label>
                 <div className="text-sm">{alert.date}</div>
               </div>
               <div>
-                <label className="text-sm mb-0.5">Transaction ID</label>
+                <label className="text-sm mb-0.5 font-lexendDecaLight">Transaction ID</label>
                 <div className="text-sm">{alert.transactionId}</div>
               </div>
-            </div>
-            
-            <div className="grid grid-cols-3 gap-4 mb-4">
               <div>
+                <label className="text-sm mb-0.5 font-lexendDecaLight">Case Priority</label>
+                <div className="text-sm">{caseSeverity || null}</div>
+              </div>
+              <div>
+                <label className="text-sm mb-0.5 font-lexendDecaLight">Country</label>
+                <div className="text-sm">{alert.country}</div>
+              </div>
+              <div>
+                <label className="text-sm mb-0.5 font-lexendDecaLight">Region</label>
+                <div className="text-sm">{alert.region}</div>
+              </div>
+              <div>
+                <label className="text-sm mb-0.5 font-lexendDecaLight">City</label>
+                <div className="text-sm">{alert.city}</div>
+              </div>
+              <div>
+                <label className="text-sm mb-0.5 font-lexendDecaLight">Network</label>
+                <div className="text-sm">{alert.network}</div>
+              </div>
+              </div>
+              </div>
+            <>
+            <div className="grid grid-cols-3 gap-4 mb-4">
+            <div>
                 <label className="text-sm mb-0.5">Case Owner</label>
                 <input
                   type="text"
-                  className={`border rounded-md px-3 py-2 text-sm w-full focus:outline-none`}
+                  className={`border ${errors.caseOwner ? 'border-red-500' : 'border-gray-300'} rounded-md px-3 py-2 text-sm w-full focus:outline-none`}
                   value={caseOwner}
                   onChange={handleInputChange}
                   placeholder="Enter Case Owner"
                   required
                 />
+                {errors.caseOwner && <p className="text-red-500 text-xs mt-1">Case Owner is required</p>}
               </div>
-              <div>
-                <label className="text-sm mb-0.5">Case Priority</label>
-                <div className="text-sm">{caseSeverity || null}</div>
-              </div>
-              <div>
-                <label className="text-sm mb-0.5">Country</label>
-                <div className="text-sm">{alert.country}</div>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-3 gap-4 mb-4">
-              <div>
-                <label className="text-sm mb-0.5">Region</label>
-                <div className="text-sm">{alert.region}</div>
-              </div>
-              <div>
-                <label className="text-sm mb-0.5">Network</label>
-                <div className="text-sm">{alert.network}</div>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4 mb-4">
               <div>
                 <label className="text-sm mb-0.5">Case Priority</label>
                 <div className="relative">
                   <select
                     value={caseSeverity}
-                    onChange={(e) => setCaseSeverity(e.target.value)}
-                    className="w-full text-sm border border-gray-300 rounded-md py-1.5 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    onChange={handleCaseSeverityChange}
+                    className={`w-full text-sm border ${errors.caseSeverity ? 'border-red-500' : 'border-gray-300'} rounded-md py-1.5 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
                   >
                     <option value="">Select Case Severity</option>
                     <option value="low">Low</option>
@@ -140,6 +186,7 @@ const PromoteToCaseModal: React.FC<PromoteToCaseModalProps> = ({ isOpen, onClose
                     <option value="high">High</option>
                     <option value="critical">Critical</option>
                   </select>
+                  {errors.caseSeverity && <p className="text-red-500 text-xs mt-1">Case Severity is required</p>}
                 </div>
               </div>
               
@@ -154,11 +201,10 @@ const PromoteToCaseModal: React.FC<PromoteToCaseModalProps> = ({ isOpen, onClose
                 ></textarea>
               </div>
             </div>
-          </div>
-          
+            </>
           <div className="flex justify-end space-x-3">
             <button 
-              onClick={onClose}
+              onClick={handleClose}
               className="px-6 py-1.5 border border-blue-600 rounded-md text-blue-600"
             >
               Cancel

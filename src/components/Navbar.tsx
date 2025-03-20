@@ -35,7 +35,7 @@ const Navbar: React.FC = () => {
 
   return (
     <div className="flex justify-center px-4 py-2">
-      <nav className="bg-white max-w-4xl shadow-lg rounded-full">
+      <nav className="max-w-4xl shadow-md rounded-full">
         <div className="flex items-center">
           {navItems.map((item) => (
 
