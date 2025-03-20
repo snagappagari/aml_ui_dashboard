@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ReportsService from '../../Services/ReportsService';
 
 interface ReportData {
@@ -66,24 +66,6 @@ const Reports: React.FC = () => {
     }
   ];
 
-  const fetchReportData = async (reportId: string) => {
-    const config = reportConfigs.find(config => config.id === reportId);
-    if (!config) return;
-
-    setIsLoading(prev => ({ ...prev, [reportId]: true }));
-    try {
-      const response = await config.serviceMethod(dateRange.startDate, dateRange.endDate, 100);
-      setReportData(prev => ({
-        ...prev,
-        [reportId]: response.data
-      }));
-    } catch (error) {
-      console.error(`Error fetching ${reportId}:`, error);
-    } finally {
-      setIsLoading(prev => ({ ...prev, [reportId]: false }));
-    }
-  };
-
   // Reset form fields to default values
   const resetFormFields = () => {
     setDateRange({
@@ -115,6 +97,8 @@ const Reports: React.FC = () => {
     }
 
     setIsDownloading(true);
+    // Set loading state for the selected report
+    setIsLoading(prev => ({ ...prev, [selectedReport]: true }));
     
     try {
       // Find the service method for the selected report
@@ -133,28 +117,37 @@ const Reports: React.FC = () => {
         throw new Error('No data received from the server');
       }
 
-       // Create a blob from the response data
-       const blob = new Blob([response.data], { type: response.headers['content-type'] });
-       const url = window.URL.createObjectURL(blob);
- 
-       // Create a link and trigger download
-       const link = document.createElement('a');
-       link.href = url;
-       const fileName = `${selectedReport}_${dateRange.startDate}_to_${dateRange.endDate}.xlsx`;
-       // Set the file name
-       link.setAttribute('download', fileName); // Adjust file name and extension if needed
-       document.body.appendChild(link);
-       link.click();
- 
-       // Clean up the link and URL object
-       link.parentNode?.removeChild(link);
-       window.URL.revokeObjectURL(url);
+      // Create a blob from the response data
+      const blob = new Blob([response.data], { type: response.headers['content-type'] });
+      const url = window.URL.createObjectURL(blob);
+
+      // Create a link and trigger download
+      const link = document.createElement('a');
+      link.href = url;
+      const fileName = `${selectedReport}_${dateRange.startDate}_to_${dateRange.endDate}.xlsx`;
+      // Set the file name
+      link.setAttribute('download', fileName); // Adjust file name and extension if needed
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up the link and URL object
+      link.parentNode?.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      
+      // Update the reportData state for the selected report to show record count
+      setReportData(prev => ({
+        ...prev,
+        [selectedReport]: response.data
+      }));
+      
       closePopup();
     } catch (error) {
       console.error('Error downloading report:', error);
       alert('Failed to download report. Please try again.');
     } finally {
       setIsDownloading(false);
+      // Reset loading state for the selected report
+      setIsLoading(prev => ({ ...prev, [selectedReport]: false }));
     }
   };
 
@@ -171,13 +164,6 @@ const Reports: React.FC = () => {
     setLimit(value);
   };
 
-  useEffect(() => {
-    // Fetch initial data for all reports
-    reportConfigs.forEach(config => {
-      fetchReportData(config.id);
-    });
-  }, []);
-
   return (
     <div className="max-w-6xl mx-auto p-5">
       <h1 className="text-xl text-center mb-8 border-b">Machine Learning Predictive Reports</h1>
@@ -191,6 +177,7 @@ const Reports: React.FC = () => {
                 className="text-blue-500 hover:text-blue-600 focus:outline-none" 
                 onClick={() => handleDownloadClick(config.id)}
                 aria-label="Download report"
+                disabled={isLoading[config.id]}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -211,7 +198,8 @@ const Reports: React.FC = () => {
               <div className="text-sm text-gray-600">
                 <p>{reportData[config.id].length} records available</p>
               </div>
-            ) : ( null
+            ) : (
+                  ""
             )}
             
             <button className="text-blue-500 hover:text-blue-600 text-sm ml-auto block focus:outline-none mt-2">
