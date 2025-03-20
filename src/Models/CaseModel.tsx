@@ -28,7 +28,11 @@ const PromoteToCaseModal: React.FC<PromoteToCaseModalProps> = ({ isOpen, onClose
   const [caseSeverity, setCaseSeverity] = useState('');
   const [caseDescription, setCaseDescription] = useState('');
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [caseOwner, setCaseOwner] = useState('');
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCaseOwner(e.target.value);
+  };
   if (!isOpen || !alert) return null;
 
   const handlePromote = () => {
@@ -39,7 +43,7 @@ const PromoteToCaseModal: React.FC<PromoteToCaseModalProps> = ({ isOpen, onClose
       alertId: alert.id || '',
       status: alert.alertStatus || '', // Set a valid status value or adjust dynamically
       alertSent: false,
-      caseOwner: alert.owner || '',
+      caseOwner: caseOwner,
       priority: caseSeverity as 'LOW' | 'MEDIUM' | 'HIGH' || 'CRITICAL', // Ensure this matches the allowed priority types
       network: alert.network || '',
       city: '',
@@ -91,7 +95,14 @@ const PromoteToCaseModal: React.FC<PromoteToCaseModalProps> = ({ isOpen, onClose
             <div className="grid grid-cols-3 gap-4 mb-4">
               <div>
                 <label className="text-sm mb-0.5">Case Owner</label>
-                <div className="text-sm">{alert.owner}</div>
+                <input
+                  type="text"
+                  className={`border rounded-md px-3 py-2 text-sm w-full focus:outline-none`}
+                  value={caseOwner}
+                  onChange={handleInputChange}
+                  placeholder="Enter Case Owner"
+                  required
+                />
               </div>
               <div>
                 <label className="text-sm mb-0.5">Case Priority</label>
@@ -156,7 +167,7 @@ const PromoteToCaseModal: React.FC<PromoteToCaseModalProps> = ({ isOpen, onClose
               onClick={handlePromote}
               className="px-6 py-1.5 bg-blue-600 text-white rounded-md"
             >
-              Promote to Case
+              Create case
             </button>
           </div>
         </div>

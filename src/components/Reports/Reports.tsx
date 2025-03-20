@@ -17,6 +17,7 @@ const Reports: React.FC = () => {
   const [isLoading, setIsLoading] = useState<{ [key: string]: boolean }>({});
   const [showDownloadPopup, setShowDownloadPopup] = useState(false);
   const [selectedReport, setSelectedReport] = useState<string | null>(null);
+  const [showMore, setShowMore] = useState<{ [key: string]: boolean }>({});
   const [dateRange, setDateRange] = useState({
     startDate: new Date().toISOString().split('T')[0],
     endDate: new Date().toISOString().split('T')[0]
@@ -31,41 +32,62 @@ const Reports: React.FC = () => {
     {
       id: 'revenue_impact_analysis',
       title: 'Revenue Impact Analysis Report',
-      description: 'The Revenue Impact report returns individual results on the market\'s revenue by product code and for all products as one aggregate. Is the initial trade value. The sum of Trade value and Trade Total Effect gives the new trade value.',
+      description: `The report predicts how transaction fees contribute to revenue. 
+                    Analyzes amount, fee, transaction_type, transaction_direction, status, and merchant_category.
+                    ML models - XGBoost and Random Forest Regression for interpretability and accuracy. 
+                    Helps financial institutions optimize fee structures to maximize revenue generation.`,
       serviceMethod: ReportsService.getRevenueImpactAnalysis
     },
     {
       id: 'fraud_detection',
       title: 'Fraud Detection Report',
-      description: 'The Revenue Impact report returns individual results on the market\'s revenue by product code and for all products as one aggregate. Is the initial trade value. The sum of Trade value and Trade Total Effect gives the new trade value.',
+      description: `The report detects the suspicious or fraudulent transactions based on past patterns.
+                    Uses variables like amount, customer_id, merchant_category, region, city, country, transaction_direction, transaction_type, status, and fee.
+                    ML Models - Random Forest and XGBoost for interpretability, MLP for deep pattern recognition.
+                    Identifies high-risk transactions before completion, reducing financial losses and enhancing security.`,
       serviceMethod: ReportsService.getFraudDetection
     },
     {
       id: 'customer_segmentation',
       title: 'Customer Segmentation Report',
-      description: 'The Revenue Impact report returns individual results on the market\'s revenue by product code and for all products as one aggregate. Is the initial trade value. The sum of Trade value and Trade Total Effect gives the new trade value.',
+      description: `The report identifies the customer spending behavior and creates user segments.
+                    Analyzes transaction_amount, merchant_category, region, transaction_type, and transaction_direction.
+                    ML Models - Combines XGBoost/Random Forest for feature importance and KMeans clustering for segmentation.
+                    Helps banks provide personalized offers, identify high-risk customers, and improve retention strategies.`,
       serviceMethod: ReportsService.getCustomerSegmentation
     },
     {
       id: 'forecast_transaction_volume',
       title: 'Forecast Transactions Report',
-      description: 'The Revenue Impact report returns individual results on the market\'s revenue by product code and for all products as one aggregate. Is the initial trade value. The sum of Trade value and Trade Total Effect gives the new trade value.',
+      description: `The report predicts the number of transactions for future time periods.
+                    Uses transaction_timestamp, transaction_type, region, merchant_category, and status.
+                    ML Models - XGBoost for explainability and MLP for deep learning on time series data.
+                    Assists banks in workforce optimization and network bandwidth allocation by predicting transaction volumes.`,
       serviceMethod: ReportsService.getForecastTransactionVolume
     },
     {
       id: 'predict_amount',
       title: 'Predict Amount Report',
-      description: 'The Revenue Impact report returns individual results on the market\'s revenue by product code and for all products as one aggregate. Is the initial trade value. The sum of Trade value and Trade Total Effect gives the new trade value.',
+      description: `The report predicts the transaction amount a customer is likely to spend.
+                    Includes customer_id, merchant_category, region, transaction_type, transaction_direction, fee, status, time_of_day, day_of_week, and month.
+                    ML Models - XGBoost and Random Forest for feature importance, MLP for capturing non-linear relationships.
+                    Enables dynamic credit limit adjustments and personalized financial recommendations for customers.`,
       serviceMethod: ReportsService.getPredictAmount
     },
     {
       id: 'risk_assessment',
       title: 'Risk Assessment Report',
-      description: 'The Revenue Impact report returns individual results on the market\'s revenue by product code and for all products as one aggregate. Is the initial trade value. The sum of Trade value and Trade Total Effect gives the new trade value.',
+      description: `The report predicts whether a transaction will fail or succeed.
+                    Includes amount, transaction_type, fee, merchant_category, region, source_account, destination_account, transaction_direction, and customer_id.
+                    ML Models - XGBoost and Random Forest for feature importance, MLP for complex pattern recognition.
+                    Enhances real-time transaction approval systems, reducing failures and improving customer trust.`,
       serviceMethod: ReportsService.getRiskAssessment
     }
   ];
-
+  
+  const toggleShowMore = (id: string) => {
+    setShowMore(prev => ({ ...prev, [id]: !prev[id] }));
+  };
   // Reset form fields to default values
   const resetFormFields = () => {
     setDateRange({
@@ -172,7 +194,7 @@ const Reports: React.FC = () => {
         {reportConfigs.map(config => (
           <div key={config.id} className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
             <div className="flex justify-between items-center mb-3">
-              <h2 className="text-lg font-medium text-gray-800">{config.title}</h2>
+              <h2 className="text-lg font-medium text-blue-800">{config.title}</h2>
               <button 
                 className="text-blue-500 hover:text-blue-600 focus:outline-none" 
                 onClick={() => handleDownloadClick(config.id)}
@@ -184,7 +206,7 @@ const Reports: React.FC = () => {
                 </svg>
               </button>
             </div>
-            <p className="text-sm text-gray-600 mb-4">{config.description}</p>
+            <p className="text-sm mb-4">{config.description}</p>
             
             {/* Using the isLoading state to show loading indicator */}
             {isLoading[config.id] ? (
@@ -201,10 +223,23 @@ const Reports: React.FC = () => {
             ) : (
                   ""
             )}
-            
-            <button className="text-blue-500 hover:text-blue-600 text-sm ml-auto block focus:outline-none mt-2">
-              Show more
+            {showMore[config.id] ? (
+              <p className="text-sm mb-4">
+                {config.description}
+              </p>
+            ) : (
+              <p className="text-sm mb-4">
+                {`${config.description.split(' ').slice(0, 20).join(' ')}...`}
+              </p>
+            )}
+
+            <button
+              className="text-blue-500 hover:text-blue-600 text-sm ml-auto block focus:outline-none mt-2"
+              onClick={() => toggleShowMore(config.id)}
+            >
+              {showMore[config.id] ? 'Show Less' : 'Show More'}
             </button>
+
           </div>
         ))}
       </div>
