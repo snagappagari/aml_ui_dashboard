@@ -29,7 +29,7 @@ const AlertsTable: React.FC<AlertsTableProps> = ({ onRowClick, setAlertData }) =
     currentPage: 0,
     totalPages: 0,
     totalElements: 0,
-    pageSize: 7
+    pageSize: 10
   });
 
   // State for search functionality

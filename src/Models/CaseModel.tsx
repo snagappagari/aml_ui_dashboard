@@ -159,7 +159,7 @@ const PromoteToCaseModal: React.FC<PromoteToCaseModalProps> = ({ isOpen, onClose
               </div>
               </div>
             <>
-            <div className="grid grid-cols-3 gap-4 mb-4">
+            <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
                 <label className="text-sm mb-0.5">Case Owner</label>
                 <input
@@ -189,18 +189,17 @@ const PromoteToCaseModal: React.FC<PromoteToCaseModalProps> = ({ isOpen, onClose
                   {errors.caseSeverity && <p className="text-red-500 text-xs mt-1">Case Severity is required</p>}
                 </div>
               </div>
-              
-              <div>
+            </div>
+            <div  className="grid grid-cols-1 mb-4">
                 <label className="text-sm mb-0.5">Description</label>
                 <textarea
                   value={caseDescription}
                   onChange={(e) => setCaseDescription(e.target.value)}
                   placeholder="Enter Description"
                   className="block w-full border border-gray-300 rounded-md py-1.5 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  rows={1}
+                  rows={2}
                 ></textarea>
               </div>
-            </div>
             </>
           <div className="flex justify-end space-x-3">
             <button 
