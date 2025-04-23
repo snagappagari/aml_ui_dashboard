@@ -2,17 +2,15 @@ trigger:
 - main
 
 pool:
-  name: MySelfHostedPool  # Change this to the name of your agent pool if you use a custom one
+  name: MySelfHostedPool
 
 variables:
-  imageName: 'aml-ui-dashboard'  # Image name (can change if needed)
+  imageName: 'aml-ui-dashboard'
   acrLoginServer: 'acrall.azurecr.io'
 
 steps:
-# Checkout code
 - checkout: self
 
-# Install Node.js and build
 - task: NodeTool@0
   inputs:
     versionSpec: '20.x'
@@ -23,7 +21,6 @@ steps:
     npm run build
   displayName: 'npm install and build'
 
-# Azure CLI login (needed for ACR login)
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'sc-new'
@@ -32,14 +29,20 @@ steps:
     inlineScript: |
       az acr login --name acrall
 
-# Build and Push to ACR
 - script: |
     docker build -t $(acrLoginServer)/$(imageName):$(Build.BuildId) .
     docker push $(acrLoginServer)/$(imageName):$(Build.BuildId)
   displayName: 'Build and Push Docker Image to ACR'
   workingDirectory: '$(Build.SourcesDirectory)'
 
-# Deploy to AKS
+# Add Replace Tokens task before deployment
+- task: replacetokens@3
+  displayName: 'Replace tokens in deployment.yaml'
+  inputs:
+    targetFiles: '**/deployment.yaml'
+    tokenPrefix: '#{'
+    tokenSuffix: '}#'
+
 - task: Kubernetes@1
   displayName: 'Deploy to AKS'
   inputs:
