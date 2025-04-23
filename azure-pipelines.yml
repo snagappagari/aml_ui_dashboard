@@ -2,7 +2,7 @@ trigger:
 - main
 
 pool:
-  name: Default  # Change this to the name of your agent pool if you use a custom one
+  name: MySelfHostedPool  # Change this to the name of your agent pool if you use a custom one
 
 variables:
   imageName: 'aml-ui-dashboard'  # Image name (can change if needed)
