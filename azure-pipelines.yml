@@ -30,9 +30,11 @@ steps:
       az acr login --name acrall
 
 - script: |
-    docker build -t $(acrLoginServer)/$(imageName):$(Build.BuildId) .
-    docker push $(acrLoginServer)/$(imageName):$(Build.BuildId)
-  displayName: 'Build and Push Docker Image to ACR'
+    docker buildx create --use
+    docker buildx build --platform linux/amd64 \
+      -t $(acrLoginServer)/$(imageName):$(Build.BuildId) \
+      --push .
+  displayName: 'Build and Push Docker Image to ACR (linux/amd64)'
   workingDirectory: '$(Build.SourcesDirectory)'
 
 # Add Replace Tokens task before deployment
