@@ -37,7 +37,7 @@ steps:
     docker build -t $(acrLoginServer)/$(imageName):$(Build.BuildId) .
     docker push $(acrLoginServer)/$(imageName):$(Build.BuildId)
   displayName: 'Build and Push Docker Image to ACR'
-  workingDirectory: 'project-deploy'
+  workingDirectory: '$(Build.SourcesDirectory)'
 
 # Deploy to AKS
 - task: Kubernetes@1
