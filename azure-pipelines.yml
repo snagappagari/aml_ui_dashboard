@@ -34,7 +34,7 @@ steps:
 
 # Build and Push to ACR
 - script: |
-    docker build -f project-deploy/Dockerfile -t $(acrLoginServer)/$(imageName):$(Build.BuildId) project-deploy
+    docker build -f ~/project-deploy/Dockerfile -t $(acrLoginServer)/$(imageName):$(Build.BuildId) project-deploy
     docker push $(acrLoginServer)/$(imageName):$(Build.BuildId)
   displayName: 'Build and Push Docker Image to ACR'
 
