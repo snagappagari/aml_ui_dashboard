@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: aml-ui-dashboard
-          image: acrall.azurecr.io/aml-ui-dashboard:$(Build.BuildId)  # ACR image reference
+          image: acrall.azurecr.io/aml-ui-dashboard:#{Build.BuildId}#  # ACR image reference
           ports:
             - containerPort: 80
 
