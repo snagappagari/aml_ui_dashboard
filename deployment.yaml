@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aml-ui-dashboard
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: aml-ui-dashboard
+  template:
+    metadata:
+      labels:
+        app: aml-ui-dashboard
+    spec:
+      containers:
+        - name: aml-ui-dashboard
+          image: acrall.azurecr.io/aml-ui-dashboard:$(Build.BuildId)  # ACR image reference
+          ports:
+            - containerPort: 80
+
