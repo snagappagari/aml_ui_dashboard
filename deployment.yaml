@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: aml-ui-dashboard
+  labels:
+    app: aml-ui-dashboard
 spec:
   replicas: 2
   selector:
@@ -12,11 +14,29 @@ spec:
       labels:
         app: aml-ui-dashboard
     spec:
-      imagePullSecrets:
-        - name: acr-auth  # This refers to the secret you created
       containers:
-        - name: aml-ui-dashboard
-          image: acrall.azurecr.io/aml-ui-dashboard:36
-          ports:
-            - containerPort: 80
+      - name: aml-ui-dashboard
+        image: acrall.azurecr.io/aml-ui-dashboard:latest
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aml-ui-dashboard-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: aml-ui-dashboard
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
