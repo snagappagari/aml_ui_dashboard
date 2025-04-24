@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: aml-ui-dashboard
-        image: acrall.azurecr.io/aml-ui-dashboard:latest
+        image: acrall.azurecr.io/aml-ui-dashboard:36
         ports:
         - containerPort: 3000
         resources:
