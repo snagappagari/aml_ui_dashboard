@@ -12,6 +12,8 @@ spec:
       labels:
         app: aml-ui-dashboard
     spec:
+      imagePullSecrets:
+        - name: acr-auth  # This refers to the secret you created
       containers:
         - name: aml-ui-dashboard
           image: acrall.azurecr.io/aml-ui-dashboard:#{Build.BuildId}#  # ACR image reference
