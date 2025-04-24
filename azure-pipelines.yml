@@ -2,7 +2,7 @@ trigger:
   - main
 
 pool:
-  name: MySelfHostedPool
+  name: MySelfHostedPool  # Your self-hosted agent pool
 
 variables:
   imageName: 'aml-ui-dashboard'
@@ -10,41 +10,40 @@ variables:
   tag: '$(Build.BuildId)'
 
 steps:
-
-# Checkout the code
+# Checkout source code
 - checkout: self
 
-# Install Node.js
+# Install Node.js (for building the frontend)
 - task: NodeTool@0
   inputs:
     versionSpec: '20.x'
   displayName: 'Install Node.js'
 
-# Install npm packages and build the project
+# Install dependencies and build
 - script: |
     npm install
     npm run build
   displayName: 'npm install and build'
 
-# Build and push Docker image to ACR
+# Build and push Docker image to Azure Container Registry (ACR)
 - script: |
     docker buildx create --use || true
     docker buildx build --platform linux/amd64 \
       -t $(acrLoginServer)/$(imageName):$(tag) \
       -t $(acrLoginServer)/$(imageName):latest \
       --push .
-  displayName: 'Build and push Docker image'
+  displayName: 'Build and push Docker image to ACR'
 
-# Deploy to AKS using manifest
+# Deploy the app to AKS using kubectl and ARM connection
 - task: Kubernetes@1
   displayName: 'Deploy to AKS'
   inputs:
     connectionType: 'Azure Resource Manager'
-    azureSubscription: 'sc-new'                # Replace with your Azure service connection name
-    azureResourceGroup: 'devops-connection'    # Replace with your AKS resource group
-    kubernetesCluster: 'aks-all'               # Replace with your AKS cluster name
+    azureSubscriptionEndpoint: 'sc-new'               # Your existing Azure service connection
+    azureResourceGroup: 'devops-connection'           # AKS resource group name
+    kubernetesCluster: 'aks-all'                      # Your AKS cluster name
     useClusterAdmin: true
     namespace: 'default'
     command: apply
     useConfigurationFile: true
-    configuration: 'deployment.yaml' # Ensure this path is correct in your repo
+    configuration: 'deployment.yaml'
