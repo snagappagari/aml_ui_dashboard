@@ -16,7 +16,7 @@ spec:
         - name: acr-auth  # This refers to the secret you created
       containers:
         - name: aml-ui-dashboard
-          image: acrall.azurecr.io/aml-ui-dashboard:#{Build.BuildId}#  # ACR image reference
+          image: acrall.azurecr.io/aml-ui-dashboard:36
           ports:
             - containerPort: 80
 
