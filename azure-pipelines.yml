@@ -1,5 +1,5 @@
 trigger:
-- main
+  - main
 
 pool:
   name: MySelfHostedPool
@@ -10,18 +10,23 @@ variables:
   tag: '$(Build.BuildId)'
 
 steps:
+
+# Checkout the code
 - checkout: self
 
+# Install Node.js
 - task: NodeTool@0
   inputs:
     versionSpec: '20.x'
   displayName: 'Install Node.js'
 
+# Install npm packages and build the project
 - script: |
     npm install
     npm run build
   displayName: 'npm install and build'
 
+# Build and push Docker image to ACR
 - script: |
     docker buildx create --use || true
     docker buildx build --platform linux/amd64 \
@@ -30,15 +35,16 @@ steps:
       --push .
   displayName: 'Build and push Docker image'
 
+# Deploy to AKS using manifest
 - task: Kubernetes@1
   displayName: 'Deploy to AKS'
   inputs:
     connectionType: 'Azure Resource Manager'
-    azureSubscription: 'sc-new' # your service connection name
-    azureResourceGroup: 'devops-connection'
-    kubernetesCluster: 'aks-all'
+    azureSubscription: 'sc-new'                # Replace with your Azure service connection name
+    azureResourceGroup: 'devops-connection'    # Replace with your AKS resource group
+    kubernetesCluster: 'aks-all'               # Replace with your AKS cluster name
     useClusterAdmin: true
     namespace: 'default'
     command: apply
     useConfigurationFile: true
-    configuration: 'manifests/deployment.yaml'
+    configuration: 'manifests/deployment.yaml' # Ensure this path is correct in your repo
