@@ -29,7 +29,7 @@ steps:
 
 # Authenticate Docker to ACR
 - script: |
-    echo "$(acrPassword)" | docker login $(acrLoginServer) -u $(acrUsername) --password-stdin
+   docker login $(acrLoginServer) -u $(acrUsername)
   displayName: 'Docker login to ACR'
   env:
     acrPassword: $(acrPassword)  # Pass the secret to the script
