@@ -8,6 +8,8 @@ variables:
   imageName: 'aml-ui-dashboard'
   acrLoginServer: 'acrall.azurecr.io'
   tag: '$(Build.BuildId)'
+  acrUsername: 'acrall'  # ACR username
+  acrPassword: '$(acrPassword)'  # ACR password (set this as a secret variable in Azure DevOps)
 
 steps:
 # Checkout source code
@@ -25,7 +27,12 @@ steps:
     npm run build
   displayName: 'npm install and build'
 
-# Build and push Docker image to Azure Container Registry (ACR)
+# Authenticate Docker to ACR
+- script: |
+    echo $(acrPassword) | docker login $(acrLoginServer) -u $(acrUsername) --password-stdin
+  displayName: 'Docker login to ACR'
+
+# Build and push Docker image to ACR
 - script: |
     docker buildx create --use || true
     docker buildx build --platform linux/amd64 \
