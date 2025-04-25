@@ -9,7 +9,7 @@ variables:
   acrLoginServer: 'acrall.azurecr.io'
   tag: '$(Build.BuildId)'
   acrUsername: 'acrall'  # ACR username
-  acrPassword: '$(acrPassword)'  # ACR password (set this as a secret variable in Azure DevOps)
+  acrPassword: $(acrPassword)  # ACR password defined as secret in the pipeline's variable settings
 
 steps:
 # Checkout source code
@@ -29,10 +29,12 @@ steps:
 
 # Authenticate Docker to ACR
 - script: |
-    echo $(acrPassword) | docker login $(acrLoginServer) -u $(acrUsername) --password-stdin
+    echo "$(acrPassword)" | docker login $(acrLoginServer) -u $(acrUsername) --password-stdin
   displayName: 'Docker login to ACR'
+  env:
+    acrPassword: $(acrPassword)  # Pass the secret to the script
 
-# Build and push Docker image to ACR
+# Build and push Docker image to Azure Container Registry (ACR)
 - script: |
     docker buildx create --use || true
     docker buildx build --platform linux/amd64 \
