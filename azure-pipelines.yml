@@ -8,8 +8,10 @@ variables:
   imageName: 'aml-ui-dashboard'
   acrLoginServer: 'acrall.azurecr.io'
   tag: '$(Build.BuildId)'
-  acrUsername: 'acrall'  # ACR username
-  acrPassword: $(acrPassword)  # ACR password defined as secret in the pipeline's variable settings
+  azureSubscription: 'sc-new'  # Your Azure service connection name
+  acrName: 'acrall'
+  resourceGroup: 'devops-connection'
+  aksCluster: 'aks-all'
 
 steps:
 # Checkout source code
@@ -27,14 +29,17 @@ steps:
     npm run build
   displayName: 'npm install and build'
 
-# Authenticate Docker to ACR
-- script: |
-   docker login $(acrLoginServer) -u $(acrUsername)
-  displayName: 'Docker login to ACR'
-  env:
-    acrPassword: $(acrPassword)  # Pass the secret to the script
+# Authenticate to ACR using Azure CLI
+- task: AzureCLI@2
+  displayName: 'Login to ACR'
+  inputs:
+    azureSubscription: '$(azureSubscription)'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az acr login --name $(acrName)
 
-# Build and push Docker image to Azure Container Registry (ACR)
+# Build and push Docker image to ACR
 - script: |
     docker buildx create --use || true
     docker buildx build --platform linux/amd64 \
@@ -43,16 +48,16 @@ steps:
       --push .
   displayName: 'Build and push Docker image to ACR'
 
-# Deploy the app to AKS using kubectl and ARM connection
+# Deploy to AKS using kubectl
 - task: Kubernetes@1
   displayName: 'Deploy to AKS'
   inputs:
     connectionType: 'Azure Resource Manager'
-    azureSubscriptionEndpoint: 'sc-new'               # Your existing Azure service connection
-    azureResourceGroup: 'devops-connection'           # AKS resource group name
-    kubernetesCluster: 'aks-all'                      # Your AKS cluster name
+    azureSubscriptionEndpoint: '$(azureSubscription)'
+    azureResourceGroup: '$(resourceGroup)'
+    kubernetesCluster: '$(aksCluster)'
     useClusterAdmin: true
     namespace: 'default'
-    command: apply
+    command: 'apply'
     useConfigurationFile: true
     configuration: 'deployment.yaml'
