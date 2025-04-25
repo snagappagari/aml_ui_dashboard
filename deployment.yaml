@@ -14,9 +14,11 @@ spec:
       labels:
         app: aml-ui-dashboard
     spec:
+      imagePullSecrets:
+        - name: acr-auth
       containers:
       - name: aml-ui-dashboard
-        image: acrall.azurecr.io/aml-ui-dashboard:36
+        image: acrall.azurecr.io/aml-ui-dashboard:latest
         ports:
         - containerPort: 3000
         resources:
