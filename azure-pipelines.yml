@@ -6,10 +6,10 @@ pool:
 
 variables:
   imageName: 'aml-ui-dashboard'
-  acrLoginServer: 'acrall.azurecr.io'
+  acrLoginServer: 'acrallnew.azurecr.io'  # New ACR login server
   tag: '$(Build.BuildId)'
   azureSubscription: 'sc-new'  # Your Azure service connection name
-  acrName: 'acrall'
+  acrName: 'acrallnew'  # New ACR name
   resourceGroup: 'devops-connection'
   aksCluster: 'aks-all'
 
