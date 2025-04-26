@@ -6,10 +6,10 @@ pool:
 
 variables:
   imageName: 'aml-ui-dashboard'
-  acrLoginServer: 'acrallnew.azurecr.io'  # New ACR login server
+  acrLoginServer: 'acrallnew.azurecr.io'  # ACR login server
   tag: '$(Build.BuildId)'
   azureSubscription: 'sc-new'  # Your Azure service connection name
-  acrName: 'acrallnew'  # New ACR name
+  acrName: 'acrallnew'  # ACR name
   resourceGroup: 'devops-connection'
   aksCluster: 'aks-all'
 
@@ -39,14 +39,14 @@ steps:
     inlineScript: |
       az acr login --name $(acrName)
 
-# Build and push Docker image to ACR
+# Build and push Docker image to ACR with multi-platform support (amd64 and arm64)
 - script: |
-    docker buildx create --use || true
-    docker buildx build --platform linux/amd64 \
+    docker buildx create --use || true  # Create and use a builder instance if not already available
+    docker buildx build --platform linux/amd64,linux/arm64 \
       -t $(acrLoginServer)/$(imageName):$(tag) \
       -t $(acrLoginServer)/$(imageName):latest \
-      --push .
-  displayName: 'Build and push Docker image to ACR'
+      --push .  # Push images to ACR
+  displayName: 'Build and push multi-platform Docker image to ACR'
 
 # Deploy to AKS using kubectl
 - task: Kubernetes@1
